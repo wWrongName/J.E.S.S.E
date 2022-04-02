@@ -82,8 +82,5 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-# Webpack
-.webpack/
-
-# Electron-Forge
-out/
+public/*
+!public/index.html
