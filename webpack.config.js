@@ -32,7 +32,7 @@ module.exports = () => {
 
     return {
         entry : {
-            app : path.resolve(SOURCE, 'js/index.js')
+            app : path.resolve(SOURCE, 'app/index.js')
         },
         output : {
             path : PUBLIC,

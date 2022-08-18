@@ -5,8 +5,8 @@
   "description": "Just Enough Safe Smart-contract Editor",
   "main": "main/index.js",
   "scripts": {
-    "dev": "pm2 start ecosystem.config.js --only dev",
-    "dev:stop": "pm2 delete dev",
+    "dev": "pm2 start ecosystem.config.js --only \"webpack_dev, electron_dev",
+    "dev:stop": "pm2 delete webpack_dev electron_dev",
     "test": "pm2 start ecosystem.config.js --only test",
     "test:stop": "pm2 delete test",
     "make": "webpack"
@@ -21,7 +21,9 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "babel-loader": "^8.2.4",
+    "css-loader": "^6.7.1",
     "electron": "18.0.1",
+    "style-loader": "^3.3.1",
     "webpack": "^5.71.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"

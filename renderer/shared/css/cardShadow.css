@@ -1,0 +1,7 @@
+.card-shadow {
+    background: var(--back-color);
+    border-radius: var(--border-radius-0);
+    background: #3a4452;
+    box-shadow: 10px 10px 20px #313a46,
+                -10px -10px 20px #434e5e;
+}

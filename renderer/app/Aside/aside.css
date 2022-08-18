@@ -1,0 +1,7 @@
+.aside {
+    position: fixed;
+    width: var(--aside-w);
+    height: calc(100% - (2 * var(--nav-m)));
+    left: var(--nav-m);
+    top: var(--nav-m);
+}
