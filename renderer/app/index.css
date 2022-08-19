@@ -14,3 +14,7 @@ body {
   margin: auto;
   background: var(--back-color) !important;
 }
+
+::-webkit-scrollbar {
+  background-color: transparent;
+}

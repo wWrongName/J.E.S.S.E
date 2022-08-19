@@ -6,7 +6,7 @@ import "../shared/css/cardShadow.css"
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCode, faFolderOpen, faFileExport, faShield } from '@fortawesome/free-solid-svg-icons'
+import { faCode, faFolderOpen, faFileExport, faShield, faEllipsis } from '@fortawesome/free-solid-svg-icons'
 
 import Navbar from "./Navbar/Navbar"
 import Aside from "./Aside/Aside"
@@ -32,6 +32,10 @@ function Root () {
         {
             name : "security",
             icon : <FontAwesomeIcon icon={faShield} />,
+        },
+        {
+            name : "settings",
+            icon : <FontAwesomeIcon icon={faEllipsis} />,
         }
     ]
 
