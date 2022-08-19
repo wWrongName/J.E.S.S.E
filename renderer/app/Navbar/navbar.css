@@ -5,3 +5,8 @@
     left: calc(2 * var(--nav-m) + var(--aside-w));
     top: var(--nav-m);
 }
+
+[active-nav = "undefined"] .nav {
+    width: 0;
+    height: 0;
+}

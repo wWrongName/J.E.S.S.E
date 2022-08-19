@@ -3,10 +3,10 @@ import React from "react"
 import "./pages.css"
 
 
-function Pages () {
+function Pages (props) {
     return(
-        <div>
-            <div className="pages card-shadow">
+        <div active-nav={props.activeItem.navbar + ""}>
+            <div className="pages card-shadow-flat">
 
             </div>
         </div>

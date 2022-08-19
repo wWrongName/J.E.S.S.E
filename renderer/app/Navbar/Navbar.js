@@ -3,11 +3,11 @@ import React from "react"
 import "./navbar.css"
 
 
-function Navbar () {
+function Navbar (props) {
     return(
-        <div>
-            <div className="nav card-shadow">
-
+        <div active-nav={props.activeItem.navbar + ""}>
+            <div className="nav card-shadow-flat">
+                
             </div>
         </div>
     )

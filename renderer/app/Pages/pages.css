@@ -5,3 +5,8 @@
     left: calc(var(--aside-w) + 2 * var(--nav-m));
     top: calc(2 * var(--nav-m) + var(--nav-h));
 }
+
+[active-nav = "undefined"] .pages {
+    top: var(--nav-m);
+    height: calc(100% - (2 * var(--nav-m)));
+}

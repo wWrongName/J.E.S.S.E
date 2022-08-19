@@ -1,13 +1,16 @@
 :root {
-  --back-color : #3a4452;
-  --border-radius-0 : 20px;
-  --aside-w : 100px;
+  --aside-active-text-color : red;
+  --aside-divider-color : black;
+  --aside-text-color : black;
+  --back-color : #e0e0e0;
+  --border-radius-0 : 10px;
+  --aside-w : 80px;
   --nav-m : 20px;
-  --nav-h : 100px;
+  --nav-h : 50px;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   margin: auto;
-  background: var(--back-color);
+  background: var(--back-color) !important;
 }
