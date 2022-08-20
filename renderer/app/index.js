@@ -11,6 +11,7 @@ import { faCode, faFolderOpen, faFileExport, faShield, faEllipsis } from '@forta
 import Navbar from "./Navbar/Navbar"
 import Aside from "./Aside/Aside"
 import Pages from "./Pages/Pages"
+import Header from "./Header/Header"
 
 
 function Root () {
@@ -50,6 +51,7 @@ function Root () {
 
     return(
         <>
+            <Header />
             <Aside items={items} openPage={openPage} />
             <Navbar activeItem={activeItem} />
             <Pages activeItem={activeItem} />

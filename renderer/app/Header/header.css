@@ -1,0 +1,38 @@
+.draggable {
+    -webkit-app-region: drag;
+}
+
+#titlebar {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    height: calc(var(--title-m) + var(--nav-m));
+    width: 100%;
+}
+
+.controls {
+    -webkit-app-region: no-drag;
+    user-select: none;
+}
+
+.title {
+    color: black;
+}
+
+.button {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.win-button {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.win-button:hover {
+    color: var(--win-active-color);
+}

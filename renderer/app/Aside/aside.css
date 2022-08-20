@@ -1,9 +1,9 @@
 .aside {
     position: fixed;
     width: var(--aside-w);
-    height: calc(100% - (2 * var(--nav-m)));
+    height: calc(100% - (2 * var(--nav-m) + var(--title-m)));
     left: var(--nav-m);
-    top: var(--nav-m);
+    top: calc(var(--nav-m) + var(--title-m));
     overflow-y: auto;
     overflow-x: hidden;
 }

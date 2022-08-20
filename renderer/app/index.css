@@ -1,4 +1,5 @@
 :root {
+  --win-active-color : red;
   --aside-active-text-color : red;
   --aside-divider-color : black;
   --aside-text-color : black;
@@ -7,6 +8,7 @@
   --aside-w : 80px;
   --nav-m : 20px;
   --nav-h : 50px;
+  --title-m : 30px;
 }
 
 body {

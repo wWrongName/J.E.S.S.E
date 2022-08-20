@@ -3,7 +3,7 @@
     width: calc(100% - (var(--aside-w) + 3 * var(--nav-m)));
     height: var(--nav-h);
     left: calc(2 * var(--nav-m) + var(--aside-w));
-    top: var(--nav-m);
+    top: calc(var(--nav-m) + var(--title-m));
 }
 
 [active-nav = "undefined"] .nav {

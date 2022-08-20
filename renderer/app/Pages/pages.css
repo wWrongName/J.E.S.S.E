@@ -1,9 +1,9 @@
 .pages {
     position: fixed;
     width: calc(100% - (var(--aside-w) + 3 * var(--nav-m)));
-    height: calc(100% - (3 * var(--nav-m) + var(--nav-h)));
+    height: calc(100% - (3 * var(--nav-m) + var(--nav-h) + var(--title-m)));
     left: calc(var(--aside-w) + 2 * var(--nav-m));
-    top: calc(2 * var(--nav-m) + var(--nav-h));
+    top: calc(2 * var(--nav-m) + var(--nav-h) + var(--title-m));
 }
 
 [active-nav = "undefined"] .pages {
