@@ -14,5 +14,5 @@ module.exports = (mainWindow) => {
     ipcMain.addListener("maximize", () => {
         maximized ? mainWindow.unmaximize() : mainWindow.maximize()
         maximized = !maximized
-    })    
+    })
 }

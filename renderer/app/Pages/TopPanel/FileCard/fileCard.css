@@ -1,0 +1,17 @@
+.file-card {
+    width: fit-content;
+    height: 100%;
+    border-radius: var(--border-radius-1);
+    background-color: var(--file-card-color);
+    color: var(--win-button-color);
+    cursor: pointer;
+}
+
+.file-card:hover {
+    background-color: var(--file-card-active-color);
+    color: var(--win-button-active-color);
+}
+
+.close-file-button:hover {
+    color: rgba(165, 50, 50, 0.747);
+}

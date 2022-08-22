@@ -1,12 +1,10 @@
 .pages {
     position: fixed;
-    width: calc(100% - (var(--aside-w) + 3 * var(--nav-m)));
-    height: calc(100% - (3 * var(--nav-m) + var(--nav-h) + var(--title-m)));
-    left: calc(var(--aside-w) + 2 * var(--nav-m));
-    top: calc(2 * var(--nav-m) + var(--nav-h) + var(--title-m));
-}
-
-[active-nav = "undefined"] .pages {
-    top: var(--nav-m);
-    height: calc(100% - (2 * var(--nav-m)));
+    width: calc(var(--aside-border) - var(--win-m));
+    padding-top: calc(var(--title-m));
+    height: calc(100% - (var(--win-m)));
+    left: var(--win-m);
+    top: 0;
+    border-top-left-radius: var(--border-radius-0);
+    border-bottom-left-radius: var(--border-radius-0);
 }

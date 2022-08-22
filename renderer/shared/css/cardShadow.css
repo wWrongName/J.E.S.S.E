@@ -1,19 +1,6 @@
 .card-shadow-flat {
-    background: var(--back-color);
-    border-radius: var(--border-radius-0);
-    box-shadow: 10px 10px 20px #bebebe,
-                -10px -10px 20px #ffffff;
-}
-
-.card-shadow-concave {
-    background: linear-gradient(145deg, #cacaca, #f0f0f0);
-    border-radius: var(--border-radius-0);
-    box-shadow: 10px 10px 20px #bebebe,
-                -10px -10px 20px #ffffff;
-}
-
-.card-shadow-pushed {
-    background: #3a4452;
-    box-shadow: inset 10px 10px 20px #2a313b,
-                inset -10px -10px 20px #4a5769;
+    background: var(--card-color);
+    /* border-radius: var(--border-radius-0); */
+    /* box-shadow: 10px 10px 20px #bebebe,
+                -10px -10px 20px #ffffff; */
 }

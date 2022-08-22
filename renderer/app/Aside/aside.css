@@ -1,27 +1,19 @@
 .aside {
     position: fixed;
-    width: var(--aside-w);
-    height: calc(100% - (2 * var(--nav-m) + var(--title-m)));
-    left: var(--nav-m);
-    top: calc(var(--nav-m) + var(--title-m));
-    overflow-y: auto;
-    overflow-x: hidden;
+    width: calc(100% - (var(--aside-border) + var(--cards-m) + var(--win-m)));
+    height: calc(100% - (var(--win-m)));
+    right: var(--win-m);
+    padding-top: calc(var(--title-m));
+    top: 0px;
+    overflow-y: hidden;
+    overflow-x: auto;
+    border-top-right-radius: var(--border-radius-0);
+    border-bottom-right-radius: var(--border-radius-0);
 }
 
-.aside-button {
-    cursor: pointer;
-    width: calc(var(--aside-w) - 8px);
-    height: calc(var(--aside-w) - 8px);
-    margin-left: 4px;
-    margin-top: 4px;
-}
-
-.aside-button:hover {
-    color: var(--aside-active-text-color);
-    border-radius: var(--border-radius-0);
-}
-
-.active-aside-button {
-    font-size: 10px;
-    color: var(--aside-active-text-color);
+.aside-selector {
+    min-width: max-content;
+    max-width: 100%;
+    padding-bottom: 4px; /* crutch */
+    border-bottom: var(--cards-m) solid var(--back-color);
 }

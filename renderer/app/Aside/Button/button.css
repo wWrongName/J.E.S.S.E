@@ -1,0 +1,18 @@
+.aside-button {
+    cursor: pointer;
+    color: var(--win-button-color);
+    width: calc(var(--aside-h) - 8px);
+    height: calc(var(--aside-h) - 8px);
+    margin-left: 4px;
+    margin-top: 4px;
+}
+
+.aside-button:hover {
+    color: var(--aside-active-text-color);
+    border-radius: var(--border-radius-0);
+}
+
+.active-aside-button {
+    font-size: 10px;
+    color: var(--aside-active-text-color);
+}

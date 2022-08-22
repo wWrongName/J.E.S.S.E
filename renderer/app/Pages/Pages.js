@@ -2,13 +2,13 @@ import React from "react"
 
 import "./pages.css"
 
+import TopPanel from "./TopPanel/TopPanel"
+
 
 function Pages (props) {
     return(
-        <div active-nav={props.activeItem.navbar + ""}>
-            <div className="pages card-shadow-flat">
-
-            </div>
+        <div className="pages card-shadow-flat">
+            <TopPanel />
         </div>
     )
 }

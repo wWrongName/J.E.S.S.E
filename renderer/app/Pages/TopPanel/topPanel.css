@@ -1,0 +1,7 @@
+.top-panel {
+    width: 100%;
+    height: calc(var(--nav-h) + 2px);
+    border-bottom: var(--cards-m) solid var(--back-color);
+    overflow-y: hidden;
+    overflow-x: scroll;
+}

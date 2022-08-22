@@ -1,22 +1,41 @@
 :root {
-  --win-active-color : red;
-  --aside-active-text-color : red;
+  --file-card-color : #171718; 
+  --file-card-active-color : #282828;
+  --win-button-active-color : #c0c0c0;
+  --win-button-color : #595959;
+  --card-color : #171718;
+  --card-color-t : #17171880;
+  --top-panel-color: #101011;
+  --title-color : white;
+  --aside-active-text-color : #c0c0c0;
   --aside-divider-color : black;
-  --aside-text-color : black;
-  --back-color : #e0e0e0;
-  --border-radius-0 : 10px;
-  --aside-w : 80px;
-  --nav-m : 20px;
+  --aside-text-color : white;
+  --back-color : #313132;
+  --border-radius-0 : 0px;
+  --border-radius-1 : 10px;
+  --win-m : 0px;
+  --aside-h : 50px;
+  --cards-m : 2px;
   --nav-h : 50px;
-  --title-m : 30px;
+  --title-m : 40px;
+  --aside-border : 500px;
+}
+
+@font-face {
+  font-family: "Inter-Light";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../shared/fonts/Inter-Light.otf") format("otf");
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+  font-family: "Inter-Light", "Arial", sans-serif !important;
   margin: auto;
   background: var(--back-color) !important;
 }
 
 ::-webkit-scrollbar {
-  background-color: transparent;
+  width: 0;
+  height: 0;
 }

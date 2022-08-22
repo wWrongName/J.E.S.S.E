@@ -1,0 +1,14 @@
+.panel-side-left {
+    position: absolute;
+    height: var(--nav-h);
+    width: 20px;
+    background: linear-gradient(to right,  rgba(0, 0, 0, 0.304),  var(--card-color-t));
+}
+
+.panel-side-right {
+    position: absolute;
+    margin-left: calc(100% - 20px);
+    height: var(--nav-h);
+    width: 20px;
+    background: linear-gradient(to left,  rgba(0, 0, 0, 0.304),  var(--card-color-t));
+}

@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCode, faFolderOpen, faFileExport, faShield, faEllipsis } from '@fortawesome/free-solid-svg-icons'
 
-import Navbar from "./Navbar/Navbar"
 import Aside from "./Aside/Aside"
 import Pages from "./Pages/Pages"
 import Header from "./Header/Header"
@@ -53,7 +52,6 @@ function Root () {
         <>
             <Header />
             <Aside items={items} openPage={openPage} />
-            <Navbar activeItem={activeItem} />
             <Pages activeItem={activeItem} />
         </>
     )

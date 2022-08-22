@@ -7,8 +7,10 @@
     z-index: 999;
     top: 0;
     left: 0;
-    height: calc(var(--title-m) + var(--nav-m));
+    height: var(--title-m);
     width: 100%;
+    border-bottom: var(--cards-m) solid var(--back-color);
+    background-color: var(--card-color);
 }
 
 .controls {
@@ -30,9 +32,14 @@
 
 .win-button {
     cursor: pointer;
+    color: var(--win-button-color);
     padding: 5px;
 }
 
 .win-button:hover {
-    color: var(--win-active-color);
+    color: var(--win-button-active-color);
+}
+
+.icon {
+    color: aquamarine;
 }
