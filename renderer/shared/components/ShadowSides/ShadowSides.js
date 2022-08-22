@@ -14,7 +14,7 @@ function ShadowSides (props) {
                     <div className="panel-side-right"></div>
                 </div> 
             }
-            <div onMouseOver={() => setShadows(true)} onMouseLeave={() => setShadows(false)}>
+            <div onMouseEnter={() => setShadows(true)} onMouseLeave={() => setShadows(false)}>
                 {props.nested}
             </div>
         </>
