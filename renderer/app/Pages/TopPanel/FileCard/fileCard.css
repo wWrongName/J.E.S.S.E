@@ -8,7 +8,7 @@
 }
 
 .file-card:hover {
-    background-color: var(--file-card-active-color);
+    /* background-color: var(--file-card-active-color); */
     color: var(--win-button-active-color);
 }
 

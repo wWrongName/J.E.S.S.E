@@ -11,6 +11,7 @@ import { faCode, faFolderOpen, faFileExport, faShield, faEllipsis } from '@forta
 import Aside from "./Aside/Aside"
 import Pages from "./Pages/Pages"
 import Header from "./Header/Header"
+import Draggable from "./Draggable/Draggable"
 
 
 function Root () {
@@ -52,6 +53,7 @@ function Root () {
         <>
             <Header />
             <Aside items={items} openPage={openPage} />
+            <Draggable />
             <Pages activeItem={activeItem} />
         </>
     )

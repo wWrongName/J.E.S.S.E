@@ -19,7 +19,8 @@ function Aside (props) {
                         )
                     })}
                 </div>
-            }/>
+            }  scrollLeft={".aside-selector"}
+            />
         </div>
     )
 }

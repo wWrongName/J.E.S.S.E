@@ -1,7 +1,8 @@
 .top-panel {
-    width: 100%;
-    height: calc(var(--nav-h) + 2px);
-    border-bottom: var(--cards-m) solid var(--back-color);
+    max-width: 100%;
+    padding-bottom: 5px; /* crutch */
+    padding-top: 5px;
     overflow-y: hidden;
     overflow-x: scroll;
+    border-bottom: var(--cards-m) solid var(--back-color);
 }

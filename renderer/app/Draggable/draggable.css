@@ -1,0 +1,8 @@
+.draggable-aside-border {
+    position: fixed;
+    width: 4px;
+    height: 100%;
+    left: calc(var(--aside-border) - 1px);
+    cursor: col-resize;
+    z-index: 1;
+}

@@ -1,10 +1,10 @@
 .pages {
     position: fixed;
-    width: calc(var(--aside-border) - var(--win-m));
-    padding-top: calc(var(--title-m));
+    width: calc(100% - (var(--aside-border) + var(--cards-m) + var(--win-m)));
     height: calc(100% - (var(--win-m)));
-    left: var(--win-m);
-    top: 0;
-    border-top-left-radius: var(--border-radius-0);
-    border-bottom-left-radius: var(--border-radius-0);
+    right: var(--win-m);
+    padding-top: calc(var(--title-m));
+    top: 0px;
+    border-top-right-radius: var(--border-radius-0);
+    border-bottom-right-radius: var(--border-radius-0);
 }

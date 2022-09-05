@@ -1,19 +1,18 @@
 .aside {
     position: fixed;
-    width: calc(100% - (var(--aside-border) + var(--cards-m) + var(--win-m)));
-    height: calc(100% - (var(--win-m)));
-    right: var(--win-m);
+    width: calc(var(--aside-border) - var(--win-m));
     padding-top: calc(var(--title-m));
-    top: 0px;
-    overflow-y: hidden;
-    overflow-x: auto;
-    border-top-right-radius: var(--border-radius-0);
-    border-bottom-right-radius: var(--border-radius-0);
+    height: calc(100% - (var(--win-m)));
+    left: var(--win-m);
+    top: 0;
+    border-top-left-radius: var(--border-radius-0);
+    border-bottom-left-radius: var(--border-radius-0);
 }
 
 .aside-selector {
-    min-width: max-content;
-    max-width: 100%;
-    padding-bottom: 4px; /* crutch */
+    width: 100%;
+    height: calc(var(--nav-h) + 2px);
     border-bottom: var(--cards-m) solid var(--back-color);
+    overflow-y: hidden;
+    overflow-x: scroll;
 }
