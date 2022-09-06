@@ -6,11 +6,11 @@ import "./draggable.css"
 function Draggable (props) {
 
     let dragTheBorder = function (e) {
-        if (e.clientX)
-            document.documentElement.style.setProperty("--aside-border", e.clientX + "px");
+        if (e.clientX > WINCONFIG.minWAside && e.clientX < window.innerWidth - WINCONFIG.minWPages)
+            document.documentElement.style.setProperty("--aside-border", e.clientX + "px")
     }
 
-    let createListener = function (e) {
+    let createListener = function () {
         document.addEventListener("mousemove", dragTheBorder)
     }
 
@@ -20,8 +20,9 @@ function Draggable (props) {
 
     return (
         <div className="draggable-aside-border" 
-            onMouseDown={e => createListener(e)}
+            onMouseDown={createListener}
             onMouseUp={removeListener}
+            onMouseLeave={removeListener}
         />
     )
 }

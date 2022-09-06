@@ -6,3 +6,8 @@
     cursor: col-resize;
     z-index: 1;
 }
+
+.draggable-aside-border:active {
+    width: 100%;
+    margin-left: -50%;
+}

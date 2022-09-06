@@ -1,0 +1,38 @@
+.file-manager-controller {
+    color: var(--win-button-color);
+    cursor: pointer;
+}
+
+.file-manager-controller:hover {
+    color: var(--win-button-active-color);
+}
+
+.dir-ent-button {
+    width: 110px;
+    height: fit-content;
+    text-align: center;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--win-button-color);
+}
+
+.dir-ent-button:hover {
+    color: var(--win-button-active-color);
+}
+
+.dir-ent-icon {
+    font-size: 3rem;
+    padding-bottom: 10px;
+}
+
+[active-dirent = true] {
+    background-color: var(--win-button-active-color);
+    border-radius: var(--border-radius-1);
+}
+
+[active-dirent = true]:hover {
+    color: var(--back-color);
+}
+

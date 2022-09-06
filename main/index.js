@@ -11,6 +11,7 @@ const createWindow = () => {
     frame: false,
     width: 800,
     height: 600,
+    minWidth : config.window.minWAside + config.window.minWPages, 
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }

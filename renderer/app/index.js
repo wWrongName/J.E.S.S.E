@@ -3,10 +3,11 @@ import ReactDOM from "react-dom/client"
 
 import "./index.css"
 import "../shared/css/cardShadow.css"
+import "../shared/css/dividers.css"
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCode, faFolderOpen, faFileExport, faShield, faEllipsis } from '@fortawesome/free-solid-svg-icons'
+import { faCode, faFolderTree, faFileExport, faShield, faEllipsis } from '@fortawesome/free-solid-svg-icons'
 
 import Aside from "./Aside/Aside"
 import Pages from "./Pages/Pages"
@@ -14,6 +15,12 @@ import Header from "./Header/Header"
 import Draggable from "./Draggable/Draggable"
 import {FileManagerAside, FileManagerPage} from "./Modes/FileManager/FileManager"
 
+window.addEventListener("resize", function(event) {
+    let asideBorder = getComputedStyle(document.body).getPropertyValue("--aside-border").replace("px", "")
+    let winSizeX = window.innerWidth
+    if (winSizeX - asideBorder < WINCONFIG.minWPages)
+        document.documentElement.style.setProperty("--aside-border", winSizeX - WINCONFIG.minWPages + "px")
+})
 
 function Root () {
     let [projectFiles, setProjectFiles] = useState([])
@@ -32,7 +39,7 @@ function Root () {
         },
         {
             name : "files",
-            icon : <FontAwesomeIcon icon={faFolderOpen} />,
+            icon : <FontAwesomeIcon icon={faFolderTree} />,
             aside : <FileManagerAside state={fsState} />,
             page : <FileManagerPage state={fsState} />,
         },
@@ -50,7 +57,7 @@ function Root () {
         }
     ]
 
-    let [activeItem, setActiveItem] = useState(0)
+    let [activeItem, setActiveItem] = useState(1)
 
     let openPage = function (name) {
         items.forEach((item, index) => {
