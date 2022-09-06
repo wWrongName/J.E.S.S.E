@@ -12,19 +12,29 @@ import Aside from "./Aside/Aside"
 import Pages from "./Pages/Pages"
 import Header from "./Header/Header"
 import Draggable from "./Draggable/Draggable"
+import {FileManagerAside, FileManagerPage} from "./Modes/FileManager/FileManager"
 
 
 function Root () {
+    let [projectFiles, setProjectFiles] = useState([])
+    let [openedFiles, setOpenedFiles] = useState([])
+
+    let fsState = {
+        projectFiles, setProjectFiles,
+        openedFiles, setOpenedFiles
+    }
+
     const items = [
         {
             name : "editor",
             icon : <FontAwesomeIcon icon={faCode} />,
-            navbar: "true"
+            navbar: true,
         },
         {
             name : "files",
             icon : <FontAwesomeIcon icon={faFolderOpen} />,
-            navbar: "true"
+            aside : <FileManagerAside state={fsState} />,
+            page : <FileManagerPage state={fsState} />,
         },
         {
             name : "deploy",
@@ -40,21 +50,21 @@ function Root () {
         }
     ]
 
-    let [activeItem, setActiveItem] = useState(items[0])
+    let [activeItem, setActiveItem] = useState(0)
 
     let openPage = function (name) {
-        items.forEach(item => {
+        items.forEach((item, index) => {
             if (item.name === name) 
-                setActiveItem(item)
+                setActiveItem(index)
         })
     }
 
     return(
         <>
             <Header />
-            <Aside items={items} openPage={openPage} />
+            <Aside items={items} openPage={openPage} activeItem={items[activeItem]} />
             <Draggable />
-            <Pages activeItem={activeItem} />
+            <Pages activeItem={items[activeItem]} />
         </>
     )
 }

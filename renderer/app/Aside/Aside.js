@@ -7,6 +7,13 @@ import { Button, ButtonActive } from "./Button/Button"
 
 
 function Aside (props) {
+    let aside
+    try {
+        aside = props.activeItem.aside
+    } catch (e) {
+        aside = <></>
+    }
+
     return(
         <div className="aside card-shadow-flat">
             <ShadowSides nested={
@@ -19,8 +26,8 @@ function Aside (props) {
                         )
                     })}
                 </div>
-            }  scrollLeft={".aside-selector"}
-            />
+            }  scrollLeft={".aside-selector"}/>
+            {aside}
         </div>
     )
 }

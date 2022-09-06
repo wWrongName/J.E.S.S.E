@@ -6,9 +6,17 @@ import TopPanel from "./TopPanel/TopPanel"
 
 
 function Pages (props) {
+    let page
+    try {
+        page = props.activeItem.page
+    } catch (e) {
+        page = <></>
+    }
+
     return(
         <div className="pages card-shadow-flat">
-            <TopPanel />
+            {props.activeItem.navbar && <TopPanel />}
+            {page}
         </div>
     )
 }
