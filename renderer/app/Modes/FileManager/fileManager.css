@@ -36,3 +36,17 @@
     color: var(--back-color);
 }
 
+.fm-header {
+    position: fixed;
+    width: calc(100% - var(--aside-border));
+    height: var(--nav-h);
+    background-color: var(--card-color);
+}
+
+.fm-footer {
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - var(--aside-border));
+    color: var(--win-button-active-color);
+    font-size: 0.9rem;
+}

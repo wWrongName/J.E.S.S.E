@@ -4,9 +4,15 @@ const path = require("path")
 
 
 let currentDir = __dirname
+let previousDir = currentDir
 
-let changePath = function (folderName) {
+let changePath = function (folderName="") {
+    previousDir = currentDir
     currentDir = path.join(currentDir, folderName)
+}
+
+let goBack = function () {
+    [previousDir, currentDir] = [currentDir, previousDir]
 }
 
 let getFolderContent = function () {
@@ -38,5 +44,6 @@ contextBridge.exposeInMainWorld(
         getCurrentFolderContent: () => getFolderContent(),
         openFolder: (folderName) => changePath(folderName),
         closeFolder: () => changePath(".."),
+        goBack: () => goBack()
     }
 )

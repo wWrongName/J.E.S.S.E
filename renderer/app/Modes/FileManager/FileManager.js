@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faQuestion, faBoxOpen, faFolderOpen, faRectangleXmark, faTrash, faFolder, faFileLines } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faQuestion, faBoxOpen, faFolderOpen, faRectangleXmark, faTrash, faFolder, faFileLines } from '@fortawesome/free-solid-svg-icons'
 
 import ErrorModal from "../../../shared/components/Modal/ErrorModal"
 
 import "./fileManager.css"
 
-const FILE_MANAGER_DIRENT_CLASS = "dir-ent-button"
+const FILE_MANAGER_DIRENT_CLASS = "click-class"
 
 
 function FileManagerPage (props) {
@@ -15,6 +15,7 @@ function FileManagerPage (props) {
     let getFolderContent = function () {
         window.fs.getCurrentFolderContent()
         .then(res => {
+            setActiveDirent()
             props.state.setProjectFiles(res.content)
         })
         .catch(e => {
@@ -47,9 +48,14 @@ function FileManagerPage (props) {
             name : "delete",
             icon : <FontAwesomeIcon icon={faTrash} />,
             action : undefined
+        },
+        goBack : {
+            name : "back",
+            icon : <FontAwesomeIcon icon={faRotateLeft} />,
+            action : () => goBack()
         }
     }
-    let controlOrder = ["openProject", "openFolder", "closeFolder", "deleteDirent"]
+    let controlOrder = ["openProject", "openFolder", "closeFolder", "goBack", "deleteDirent"]
 
     let renderDirent = function (dirent, index) {
         let icon
@@ -60,16 +66,16 @@ function FileManagerPage (props) {
         else 
             icon = <FontAwesomeIcon icon={faQuestion} />
         return (
-            <div className={`mx-auto p-2 ${FILE_MANAGER_DIRENT_CLASS}`} 
+            <div className={`mx-auto p-2 dir-ent-button ${FILE_MANAGER_DIRENT_CLASS}`} 
                 onClick={() => setActiveDirent(index)} 
                 onDoubleClick={() => openDirent(dirent)}
                 active-dirent={(activeDirent === index).toString()}
                 key={index}
             >
-                <div className="dir-ent-icon d-flex justify-content-center">
+                <div className={`dir-ent-icon d-flex justify-content-center  ${FILE_MANAGER_DIRENT_CLASS}`}>
                     {icon}
                 </div>
-                <div className="d-flex justify-content-center">
+                <div className={`d-flex justify-content-center ${FILE_MANAGER_DIRENT_CLASS}`}>
                     {dirent.name}
                 </div>
             </div>
@@ -77,6 +83,8 @@ function FileManagerPage (props) {
     }
 
     let openDirent = function (dirent) {
+        if (!dirent)
+            return
         if (dirent.isDir)
             openFolder(dirent.name)
         else if (dirent.isFile)
@@ -104,6 +112,15 @@ function FileManagerPage (props) {
             return -1
         }
     }
+
+    let goBack = function () {
+        try {
+            window.fs.goBack()
+            getFolderContent()
+        } catch (e) {
+            return -1
+        }
+    }
     
     let openFile = function (fileName) {
         console.log("open file")
@@ -116,25 +133,35 @@ function FileManagerPage (props) {
         } catch (e) {}
     }
 
+    let itemsLen = props.state.projectFiles.length
+
     return(
         <>
             <ErrorModal modalbody={modalBody} onHide={() => setModalBody()} show={modalBody}/>
-            <div className="py-3 h-100 overflow-auto" onClickCapture={handlePageClick}>
-                <div className="d-flex justify-content-center align-items-center mb-3">
+            <div className="pb-3 h-100 overflow-auto" onClickCapture={handlePageClick}>
+                <div className={`d-flex justify-content-center align-items-center fm-header`}>
                     {controlOrder.map((controller, index) => {
                         let button = controls[controller]
                         return(
-                            <div className="mx-2 file-manager-controller" onClick={button.action}>
+                            <div className={`mx-2 file-manager-controller text-center ${FILE_MANAGER_DIRENT_CLASS}`} onClick={button.action}>
                                 {button.icon} {button.name}
                             </div>
                         )
                     })}
                 </div>
                 {/* <div className="light-divider mx-5"></div> */}
-                <div className="d-flex flex-wrap m-4">
+                <div className="d-flex flex-wrap mx-4 my-5 pt-4">
                     {props.state.projectFiles.map((dirent, index) => {
                         return renderDirent(dirent, index)
                     })}
+                </div>
+                <div className="fm-footer py-2 px-5 d-flex justify-content-between align-items-center"> 
+                    <div className="text-truncate w-75">
+                        {window.fs.getCurrentPath()}
+                    </div>
+                    <div className={`text-center`}>
+                        {props.state.projectFiles.length} {itemsLen === 1 ? "item" : "items"}
+                    </div>
                 </div>
             </div>
         </> 
