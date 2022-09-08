@@ -40,13 +40,14 @@
     position: fixed;
     width: calc(100% - var(--aside-border));
     height: var(--nav-h);
-    background-color: var(--card-color);
+    background-color: var(--card-color-t);
 }
 
 .fm-footer {
     position: fixed;
     bottom: 0;
     width: calc(100% - var(--aside-border));
-    color: var(--win-button-active-color);
+    color: var(--win-button-color);
+    background-color: var(--card-color-t);
     font-size: 0.9rem;
 }

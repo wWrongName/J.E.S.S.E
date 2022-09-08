@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import _ from "lodash"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRotateLeft, faQuestion, faBoxOpen, faFolderOpen, faRectangleXmark, faTrash, faFolder, faFileLines } from '@fortawesome/free-solid-svg-icons'
@@ -16,7 +17,7 @@ function FileManagerPage (props) {
         window.fs.getCurrentFolderContent()
         .then(res => {
             setActiveDirent()
-            props.state.setProjectFiles(res.content)
+            setLocalDirents(res.content)
         })
         .catch(e => {
             setModalBody(e.err.toString())
@@ -27,17 +28,22 @@ function FileManagerPage (props) {
 
     let [modalBody, setModalBody] = useState()
     let [activeDirent, setActiveDirent] = useState()
+    let [localDirents, setLocalDirents] = useState([])
 
     let controls = {
         openProject : {
             name : "open project",
             icon : <FontAwesomeIcon icon={faBoxOpen} />,
-            action : undefined
+            action : () => {
+                let projectRoot = _.cloneDeep(localDirents[activeDirent])
+                openFolder(localDirents[activeDirent])
+                openProject(projectRoot)
+            }
         },
         openFolder : {
             name : "open folder",
             icon : <FontAwesomeIcon icon={faFolderOpen} />,
-            action : () => openDirent(props.state.projectFiles[activeDirent])
+            action : () => openDirent(localDirents[activeDirent])
         },
         closeFolder : {
             name : "close folder",
@@ -126,6 +132,51 @@ function FileManagerPage (props) {
         console.log("open file")
     }
 
+    let openProject = function (dirent) {
+        let projectObj = {
+            rootDir : window.fs.getCurrentPath(),
+            tree : [
+                // {type} : true/false,
+                // name : ""
+                // content : []
+            ]
+        }
+        fillFileTree([projectObj.rootDir], []).then(res => {
+            projectObj.tree = res
+            console.log(res)
+            props.state.setProjectFiles(projectObj)
+            props.state.openPage("editor")
+        })
+    }
+
+    let fillFileTree = function (dirPath, objPathIndexes) {
+        return new Promise(resolve => {
+            let treeNode = []
+            let promises = [], indexes = []
+            window.fs.getSpecialFolderContent(dirPath)
+            .then(dirents => {
+                dirents.content.forEach((dirent, index) => {
+                    let nestedTreeNode = {name: dirent.name}
+                    if (dirent.isFile && objPathIndexes.length) 
+                        nestedTreeNode.index = objPathIndexes
+                    if (dirent.isDir) {
+                        indexes.push(index)
+                        promises.push(fillFileTree(dirPath.concat(dirent.name), objPathIndexes.concat([index])))
+                    }
+                    treeNode.push(nestedTreeNode)
+                })
+                Promise.all(promises).then(res => {
+                    res.map((fileTree, index) => treeNode[indexes[index]].content = fileTree)
+                    resolve(treeNode)
+                })
+            })
+            .catch(e => {
+                // call errModal
+                resolve([])
+            })
+        })
+    }
+
     let handlePageClick = function (e) {
         try {
             if (e.target.className.search(FILE_MANAGER_DIRENT_CLASS) === -1)
@@ -133,7 +184,7 @@ function FileManagerPage (props) {
         } catch (e) {}
     }
 
-    let itemsLen = props.state.projectFiles.length
+    let itemsLen = localDirents.length
 
     return(
         <>
@@ -151,7 +202,7 @@ function FileManagerPage (props) {
                 </div>
                 {/* <div className="light-divider mx-5"></div> */}
                 <div className="d-flex flex-wrap mx-4 my-5 pt-4">
-                    {props.state.projectFiles.map((dirent, index) => {
+                    {localDirents.map((dirent, index) => {
                         return renderDirent(dirent, index)
                     })}
                 </div>
@@ -160,7 +211,7 @@ function FileManagerPage (props) {
                         {window.fs.getCurrentPath()}
                     </div>
                     <div className={`text-center`}>
-                        {props.state.projectFiles.length} {itemsLen === 1 ? "item" : "items"}
+                        {localDirents.length} {itemsLen === 1 ? "item" : "items"}
                     </div>
                 </div>
             </div>

@@ -26,8 +26,15 @@ function Root () {
     let [projectFiles, setProjectFiles] = useState([])
     let [openedFiles, setOpenedFiles] = useState([])
 
+    let openPage = function (name) {
+        items.forEach((item, index) => {
+            if (item.name === name) 
+                setActiveItem(index)
+        })
+    }
+
     let fsState = {
-        projectFiles, setProjectFiles,
+        setProjectFiles, openPage,
         openedFiles, setOpenedFiles
     }
 
@@ -58,13 +65,6 @@ function Root () {
     ]
 
     let [activeItem, setActiveItem] = useState(1)
-
-    let openPage = function (name) {
-        items.forEach((item, index) => {
-            if (item.name === name) 
-                setActiveItem(index)
-        })
-    }
 
     return(
         <>

@@ -15,9 +15,11 @@ let goBack = function () {
     [previousDir, currentDir] = [currentDir, previousDir]
 }
 
-let getFolderContent = function () {
+let getFolderContent = function (dirPath=currentDir) {
+    if (Array.isArray(dirPath))
+        dirPath = dirPath.reduce((prev, cur) => path.join(prev, cur), "")
     return new Promise((resolve, reject) => {
-        fs.readdir(currentDir, {withFileTypes: true, encoding: "utf-8"}, (err, files) => {
+        fs.readdir(dirPath, {withFileTypes: true, encoding: "utf-8"}, (err, files) => {
             if (err) {
                 console.log(err)
                 reject({err: err, content: []})
@@ -38,10 +40,12 @@ let getFolderContent = function () {
     })
 }
 
+
 contextBridge.exposeInMainWorld(
     "fs", {
         getCurrentPath: () => currentDir,
         getCurrentFolderContent: () => getFolderContent(),
+        getSpecialFolderContent: (specialPath) => getFolderContent(specialPath),
         openFolder: (folderName) => changePath(folderName),
         closeFolder: () => changePath(".."),
         goBack: () => goBack()

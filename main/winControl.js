@@ -1,7 +1,5 @@
 const { ipcMain } = require("electron")
 
-let maximized = false
-
 module.exports = (mainWindow) => {
     ipcMain.addListener("close", () => {
         mainWindow.close()
@@ -12,7 +10,6 @@ module.exports = (mainWindow) => {
     })
     
     ipcMain.addListener("maximize", () => {
-        maximized ? mainWindow.unmaximize() : mainWindow.maximize()
-        maximized = !maximized
+        mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize()
     })
 }
