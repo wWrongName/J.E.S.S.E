@@ -2,8 +2,6 @@ import React from "react"
 
 import "./pages.css"
 
-import TopPanel from "./TopPanel/TopPanel"
-
 
 function Pages (props) {
     let page
@@ -15,7 +13,6 @@ function Pages (props) {
 
     return(
         <div className="pages card-shadow-flat">
-            {props.activeItem.navbar && <TopPanel />}
             {page}
         </div>
     )

@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react"
 import _ from "lodash"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faRotateLeft, faQuestion, faBoxOpen, faFolderOpen, faRectangleXmark, faTrash, faFolder, faFileLines } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faQuestion, faBoxOpen, faFolderOpen, faRectangleXmark, faTrash, faFolder, faFileLines, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 import ErrorModal from "../../../shared/components/Modal/ErrorModal"
 
 import "./fileManager.css"
+import traverseAndRender from "../../../shared/utils/traverseAndRender"
 
 const FILE_MANAGER_DIRENT_CLASS = "click-class"
 
@@ -35,9 +36,9 @@ function FileManagerPage (props) {
             name : "open project",
             icon : <FontAwesomeIcon icon={faBoxOpen} />,
             action : () => {
-                let projectRoot = _.cloneDeep(localDirents[activeDirent])
-                openFolder(localDirents[activeDirent])
-                openProject(projectRoot)
+                if (activeDirent !== undefined)
+                    openFolder(localDirents[activeDirent].name)
+                openProject()
             }
         },
         openFolder : {
@@ -132,7 +133,7 @@ function FileManagerPage (props) {
         console.log("open file")
     }
 
-    let openProject = function (dirent) {
+    let openProject = function () {
         let projectObj = {
             rootDir : window.fs.getCurrentPath(),
             tree : [
@@ -143,7 +144,6 @@ function FileManagerPage (props) {
         }
         fillFileTree([projectObj.rootDir], []).then(res => {
             projectObj.tree = res
-            console.log(res)
             props.state.setProjectFiles(projectObj)
             props.state.openPage("editor")
         })
@@ -158,7 +158,7 @@ function FileManagerPage (props) {
                 dirents.content.forEach((dirent, index) => {
                     let nestedTreeNode = {name: dirent.name}
                     if (dirent.isFile && objPathIndexes.length) 
-                        nestedTreeNode.index = objPathIndexes
+                        nestedTreeNode.indexes = objPathIndexes
                     if (dirent.isDir) {
                         indexes.push(index)
                         promises.push(fillFileTree(dirPath.concat(dirent.name), objPathIndexes.concat([index])))
@@ -194,7 +194,7 @@ function FileManagerPage (props) {
                     {controlOrder.map((controller, index) => {
                         let button = controls[controller]
                         return(
-                            <div className={`mx-2 file-manager-controller text-center ${FILE_MANAGER_DIRENT_CLASS}`} onClick={button.action}>
+                            <div className={`mx-2 file-manager-controller text-center ${FILE_MANAGER_DIRENT_CLASS}`} onClick={button.action} key={index}>
                                 {button.icon} {button.name}
                             </div>
                         )
@@ -211,7 +211,7 @@ function FileManagerPage (props) {
                         {window.fs.getCurrentPath()}
                     </div>
                     <div className={`text-center`}>
-                        {localDirents.length} {itemsLen === 1 ? "item" : "items"}
+                        {itemsLen} {itemsLen === 1 ? "item" : "items"}
                     </div>
                 </div>
             </div>
@@ -220,8 +220,134 @@ function FileManagerPage (props) {
 }
 
 function FileManagerAside (props) {
+
+    let chevronOpenClose = function (id) {
+        let el1 = document.querySelector(`.${id} .aside-fs-group-header .aside-chevron`)
+        let el = document.querySelector(`.${id} .chevron-after`)
+
+        if (el.getAttribute("opened") === "false") {
+            el.setAttribute("opened", "true")
+            el.style.height = "max-content"
+            el1.style.transform = `rotate(90deg)`
+        } else {
+            el.setAttribute("opened", "false")
+            el.style.height = 0
+            el1.style.transform = `rotate(0)`
+        }
+    }
+
+    let compareIndexes = function (indexex0, indexes1) {
+        if (indexex0.length === indexes1.length)
+            return indexex0.every((el, i) => el === indexes1[i])
+        return false
+    }
+
+    let fileIsNotOpened = function (dirent) {
+        if (dirent.indexes)
+            return props.state.openedFiles.find(file => compareIndexes(file.indexes, dirent.indexes) && dirent.name === file.name) === undefined
+        return props.state.openedFiles.find(file => file.name === dirent.name) === undefined
+    }
+
+    let setPath = function (dirent) {
+        let {rootDir, tree} = props.state.projectFiles
+        tree = _.cloneDeep(tree)
+        return dirent.indexes.reduce((prevString, curIndex) => {
+            let newPath = window.fs.pathJoin(prevString, tree[curIndex].name)
+            tree = tree[curIndex].content
+            return newPath
+        }, rootDir)
+    }
+
+    let setOpenedFiles = function (path, dirent) {
+        let openedFiles = props.state.openedFiles
+        openedFiles.push({
+            name : dirent.name,
+            path : path,
+            indexes : dirent.indexes
+        })
+        props.state.setOpenedFiles(openedFiles)
+        props.state.setProjectFiles({...props.state.projectFiles, forceUpd : true})
+    }
+
+    let openFile = function (dirent) {
+        if (fileIsNotOpened(dirent)) {
+            if (dirent.indexes) {
+                setOpenedFiles(setPath(dirent), dirent)
+            } else {
+                setOpenedFiles(props.state.projectFiles.rootDir, dirent)
+            }
+        }
+    }
+
+    let [openDirs, setOpenDirs] = useState([])
+
+    let renderFileTree = function (groupList) {
+        let expDir = function (indexes) {
+            let filtered = openDirs.filter(el => el !== indexes)
+            if (filtered.length !== openDirs.length)
+                setOpenDirs(filtered)
+            else {
+                openDirs.push(indexes)
+                setOpenDirs(openDirs)
+                props.state.setProjectFiles({...props.state.projectFiles, forceUpd : !props.state.projectFiles.forceUpd})
+            }
+        }
+
+        let listUI = traverseAndRender(groupList, (dirent, indexes) => {
+            let offset = indexes.map(() => <div className="ps-2"></div>)
+            offset.push(<div className="ps-2"></div>)
+            indexes = indexes.toString()
+        
+            if (!dirent.content) // this is File
+                return( 
+                    <div key={indexes} className="d-flex aside-fs-dirent" onDoubleClick={() => openFile(dirent)}>
+                        {offset}
+                        <div>
+                            {dirent.name}
+                        </div>
+                    </div>
+                )
+            if (dirent.content) { // this is Directory
+                return (
+                    <div key={indexes} className="d-flex aside-fs-dirent" onClick={() => {expDir(indexes)}}>
+                        {offset}
+                        <div className={`d-flex align-items-center`}>
+                            <FontAwesomeIcon icon={faChevronRight} className="aside-chevron"/>
+                            <div className="ms-2">{dirent.name}</div>
+                        </div>
+                    </div>
+                )
+            }
+        }, [], openDirs)
+
+        return(listUI)
+    }
+
+    let renderAsideGroup = function (title, groupList) {
+        let id = "chevron-" + title
+        return(
+            <div className={id}>
+                <div className={`d-flex align-items-center aside-fs-group-header ms-2 mt-1 ${title}`} onClick={() => {chevronOpenClose(id)}}>
+                    <FontAwesomeIcon icon={faChevronRight} className="aside-chevron" opened="true"/>
+                    <div className="ms-2">{title}</div>
+                </div>
+                <div className="chevron-after d-flex">
+                    <div className="w-100">
+                        {renderFileTree(groupList)}
+                    </div>
+                </div> 
+                <div className="aside-divider ms-4 me-2 mt-1" />
+            </div>
+        )
+    }
+
+    let projectContent = props.state.projectFiles.tree ? props.state.projectFiles.tree : []
+
     return(
-        <>fileManagerAside</>
+        <div className="py-1 overflow-auto aside-fs-card">
+            {renderAsideGroup("open", props.state.openedFiles)}
+            {renderAsideGroup("project", projectContent)}
+        </div>
     )
 }
 

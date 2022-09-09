@@ -14,6 +14,7 @@ import Pages from "./Pages/Pages"
 import Header from "./Header/Header"
 import Draggable from "./Draggable/Draggable"
 import {FileManagerAside, FileManagerPage} from "./Modes/FileManager/FileManager"
+import {EditorPage} from "./Modes/Editor/Editor"
 
 window.addEventListener("resize", function(event) {
     let asideBorder = getComputedStyle(document.body).getPropertyValue("--aside-border").replace("px", "")
@@ -23,31 +24,36 @@ window.addEventListener("resize", function(event) {
 })
 
 function Root () {
-    let [projectFiles, setProjectFiles] = useState([])
+    let [projectFiles, setProjectFiles] = useState({})
     let [openedFiles, setOpenedFiles] = useState([])
+    let [activeItem, setActiveItem] = useState(0)
 
     let openPage = function (name) {
         items.forEach((item, index) => {
-            if (item.name === name) 
+            if (item.name === name)
                 setActiveItem(index)
         })
     }
 
     let fsState = {
-        setProjectFiles, openPage,
-        openedFiles, setOpenedFiles
+        setProjectFiles, projectFiles,
+        setOpenedFiles, openedFiles,
+        openPage
     }
+
+    let fileManagerAside = <FileManagerAside state={fsState} />
 
     const items = [
         {
             name : "editor",
             icon : <FontAwesomeIcon icon={faCode} />,
-            navbar: true,
+            aside : fileManagerAside,
+            page : <EditorPage state={fsState} />,
         },
         {
             name : "files",
             icon : <FontAwesomeIcon icon={faFolderTree} />,
-            aside : <FileManagerAside state={fsState} />,
+            aside : fileManagerAside,
             page : <FileManagerPage state={fsState} />,
         },
         {
@@ -63,8 +69,6 @@ function Root () {
             icon : <FontAwesomeIcon icon={faEllipsis} />,
         }
     ]
-
-    let [activeItem, setActiveItem] = useState(1)
 
     return(
         <>

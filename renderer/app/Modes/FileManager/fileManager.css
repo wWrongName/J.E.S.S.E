@@ -51,3 +51,50 @@
     background-color: var(--card-color-t);
     font-size: 0.9rem;
 }
+
+.aside-fs-group-header {
+    color: var(--win-button-color);
+    cursor: pointer;
+    /* border-bottom: 1px solid var(--aside-divider-color); */
+}
+
+.aside-fs-group-header:hover {
+    color: var(--win-button-active-color);
+}
+
+.aside-chevron {
+    font-size: 0.7rem;
+    transform: rotate(90deg);
+}
+
+.aside-divider {
+    border-bottom: 1px solid var(--back-color);
+}
+
+[chevron-open = "true"] {
+    transform: rotate(90deg);
+}
+
+.aside-fs-dirent {
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    color: var(--win-button-color);
+    white-space: nowrap;
+}
+
+.aside-fs-dirent:hover {
+    width: 100%;
+    border-top: 1px solid var(--back-color);
+    border-bottom: 1px solid var(--back-color);
+    color: var(--win-button-active-color);
+}
+
+.aside-fs-card {
+    height: calc(100% - var(--nav-h));
+}
+
+.chevron-after {
+    overflow : hidden;
+    height : max-content;
+}

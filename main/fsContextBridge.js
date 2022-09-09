@@ -40,9 +40,16 @@ let getFolderContent = function (dirPath=currentDir) {
     })
 }
 
+let pathJoin = function (...args) {
+    if (Array.isArray(args))
+        return args.reduce((prev, cur) => path.join(prev, cur), "")
+    return path.join(args)
+}
+
 
 contextBridge.exposeInMainWorld(
     "fs", {
+        pathJoin,
         getCurrentPath: () => currentDir,
         getCurrentFolderContent: () => getFolderContent(),
         getSpecialFolderContent: (specialPath) => getFolderContent(specialPath),

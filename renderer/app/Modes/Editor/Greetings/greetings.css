@@ -1,0 +1,15 @@
+.greetings-title {
+    font-size: 6rem;
+    color: var(--win-button-color);
+}
+
+.greetings {
+    font-size: 1rem !important;
+    font-weight: bold;
+    color: var(--win-button-color);
+    width: fit-content;
+}
+
+.greetings-divider {
+    border-bottom: 1px solid var(--win-button-color);
+}
