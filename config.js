@@ -5,6 +5,7 @@ module.exports = {
         minWAside : 100,
         minWPages : 530,
     },
+    path_history_size : 10,
     mode : MODE,
     port : 1234
 }

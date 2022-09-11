@@ -11,6 +11,7 @@
   --aside-divider-color : black;
   --aside-text-color : white;
   --back-color : #313132;
+  --placeholder-color : #444444;
   --border-radius-0 : 0px;
   --border-radius-1 : 10px;
   --win-m : 0px;
@@ -33,6 +34,12 @@ body {
   font-family: "Inter-Light", "Arial", sans-serif !important;
   margin: auto;
   background: var(--back-color) !important;
+}
+
+input {
+    outline: none;
+    border: none;
+    color: var(--win-button-active-color);
 }
 
 ::-webkit-scrollbar {

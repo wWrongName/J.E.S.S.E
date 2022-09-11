@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import _ from "lodash"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faRotateLeft, faQuestion, faBoxOpen, faFolderOpen, faRectangleXmark, faTrash, faFolder, faFileLines, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faRotateLeft, faQuestion, faBoxOpen, faFolderOpen, faRectangleXmark, faTrash, faFolder, faFileLines, faChevronRight, faPlusCircle, faFolderClosed, faFile, faFileCirclePlus, faFolderPlus, faX, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import ErrorModal from "../../../shared/components/Modal/ErrorModal"
 
@@ -21,7 +21,11 @@ function FileManagerPage (props) {
             setLocalDirents(res.content)
         })
         .catch(e => {
-            setModalBody(e.err.toString())
+            try {
+                setModalBody(e.err.toString())
+            } catch (err) {
+                setModalBody(e.toString())
+            }
         })
     }
 
@@ -54,7 +58,10 @@ function FileManagerPage (props) {
         deleteDirent : {
             name : "delete",
             icon : <FontAwesomeIcon icon={faTrash} />,
-            action : undefined
+            action : () => {
+                window.fs.delete(localDirents[activeDirent])
+                .then(() => getFolderContent())
+            }
         },
         goBack : {
             name : "back",
@@ -177,11 +184,33 @@ function FileManagerPage (props) {
         })
     }
 
+    let [mkDirentForm, chMkDirentForm] = useState(false)
+
     let handlePageClick = function (e) {
         try {
             if (e.target.className.search(FILE_MANAGER_DIRENT_CLASS) === -1)
                 setActiveDirent()
         } catch (e) {}
+    }
+
+    let validateFileName = function (name) {
+        return name
+    }
+
+    let validateFolderName = function (name) {
+        return name
+    }
+
+    let createDirent = function (type) {
+        let promise
+        if (type === "file") {
+            promise = window.fs.createFile(validateFileName(document.getElementById("fs-create-file").value))
+        }
+        if (type === "folder") {
+            promise = window.fs.createFolder(validateFolderName(document.getElementById("fs-create-folder").value))
+        }
+        chMkDirentForm(false)
+        promise.then(() => getFolderContent()).catch(e => console.log(e))
     }
 
     let itemsLen = localDirents.length
@@ -207,11 +236,29 @@ function FileManagerPage (props) {
                     })}
                 </div>
                 <div className="fm-footer py-2 px-5 d-flex justify-content-between align-items-center"> 
-                    <div className="text-truncate w-75">
-                        {window.fs.getCurrentPath()}
-                    </div>
                     <div className={`text-center`}>
+                        <FontAwesomeIcon icon={faPlusCircle} className="me-2 file-manager-controller" onClick={() => {chMkDirentForm(!mkDirentForm)}} />
                         {itemsLen} {itemsLen === 1 ? "item" : "items"}
+                    </div>
+                    { mkDirentForm && 
+                        <div className="fs-add-dirent p-1">
+                            <div className="pb-1 d-flex">
+                                <input id="fs-create-file" className="text-center fs-add-input px-2" placeholder="file" />
+                                <div className="fs-create-button px-2 ms-1 d-flex align-items-center" onClick={() => createDirent("file")}>
+                                    <FontAwesomeIcon icon={faFileCirclePlus} />
+                                </div>
+                            </div>
+                            <div className="fs-add-divider"></div>
+                            <div className="pt-1 d-flex">
+                                <input id="fs-create-folder" className="text-center fs-add-input px-2" placeholder="folder" />
+                                <div className="fs-create-button px-2 ms-1 d-flex align-items-center" onClick={() => createDirent("folder")}>
+                                    <FontAwesomeIcon icon={faFolderPlus} />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div className="text-truncate">
+                        {window.fs.getCurrentPath()}
                     </div>
                 </div>
             </div>
@@ -279,14 +326,23 @@ function FileManagerAside (props) {
         }
     }
 
+    let closeFile = function (dirent) {
+        let files = props.state.openedFiles
+        files = files.filter(file => file.path + file.name !== dirent.path + dirent.name)
+        props.state.setOpenedFiles(files)
+    }
+
     let [openDirs, setOpenDirs] = useState([])
 
-    let renderFileTree = function (groupList) {
-        let expDir = function (indexes) {
+    let renderFileTree = function (groupList, allowRm) {
+        let expDir = function (indexes, e) {
             let filtered = openDirs.filter(el => el !== indexes)
-            if (filtered.length !== openDirs.length)
+            let chevron = document.getElementById(indexes)
+            if (filtered.length !== openDirs.length) {
+                chevron.style.transform = "rotate(0)"
                 setOpenDirs(filtered)
-            else {
+            } else {
+                chevron.style.transform = "rotate(90deg)"
                 openDirs.push(indexes)
                 setOpenDirs(openDirs)
                 props.state.setProjectFiles({...props.state.projectFiles, forceUpd : !props.state.projectFiles.forceUpd})
@@ -299,20 +355,27 @@ function FileManagerAside (props) {
             indexes = indexes.toString()
         
             if (!dirent.content) // this is File
-                return( 
-                    <div key={indexes} className="d-flex aside-fs-dirent" onDoubleClick={() => openFile(dirent)}>
-                        {offset}
-                        <div>
-                            {dirent.name}
+                return(
+                    <div key={indexes} className="d-flex justify-content-start aside-fs-dirent" onDoubleClick={() => openFile(dirent)}>
+                        { allowRm && 
+                            <div className="aside-close-file-button ms-4" onClick={() => closeFile(dirent)}>
+                                <FontAwesomeIcon icon={faXmark} />
+                            </div> || <></>
+                        }
+                        <div className="d-flex">
+                            {offset}
+                            <div>
+                                {dirent.name}
+                            </div>
                         </div>
                     </div>
                 )
             if (dirent.content) { // this is Directory
                 return (
-                    <div key={indexes} className="d-flex aside-fs-dirent" onClick={() => {expDir(indexes)}}>
+                    <div key={indexes} className="d-flex aside-fs-dirent" onClick={e => {expDir(indexes, e)}}>
                         {offset}
                         <div className={`d-flex align-items-center`}>
-                            <FontAwesomeIcon icon={faChevronRight} className="aside-chevron"/>
+                            <FontAwesomeIcon icon={faChevronRight} className="aside-chevron" id={indexes} style={{transform : "rotate(0)"}} />
                             <div className="ms-2">{dirent.name}</div>
                         </div>
                     </div>
@@ -323,7 +386,7 @@ function FileManagerAside (props) {
         return(listUI)
     }
 
-    let renderAsideGroup = function (title, groupList) {
+    let renderAsideGroup = function (title, groupList, allowRm) {
         let id = "chevron-" + title
         return(
             <div className={id}>
@@ -333,7 +396,7 @@ function FileManagerAside (props) {
                 </div>
                 <div className="chevron-after d-flex">
                     <div className="w-100">
-                        {renderFileTree(groupList)}
+                        {renderFileTree(groupList, allowRm)}
                     </div>
                 </div> 
                 <div className="aside-divider ms-4 me-2 mt-1" />
@@ -342,10 +405,18 @@ function FileManagerAside (props) {
     }
 
     let projectContent = props.state.projectFiles.tree ? props.state.projectFiles.tree : []
+    // let projectName = ""
+    // if (props.state.projectFiles.rootDir) {
+    //     projectName = props.state.projectFiles.rootDir.split(window.fs.getSep)
+    //     projectName = projectName[projectName.length - 1]
+    //     projectName = `project - ${projectName}`
+    // } else {
+    //     projectName = "project"
+    // }
 
     return(
         <div className="py-1 overflow-auto aside-fs-card">
-            {renderAsideGroup("open", props.state.openedFiles)}
+            {renderAsideGroup("open", props.state.openedFiles, true)}
             {renderAsideGroup("project", projectContent)}
         </div>
     )

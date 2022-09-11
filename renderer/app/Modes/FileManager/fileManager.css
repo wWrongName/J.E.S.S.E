@@ -98,3 +98,49 @@
     overflow : hidden;
     height : max-content;
 }
+
+.fs-add-dirent {
+    position: fixed;
+    bottom: 40px;
+    border-radius: var(--border-radius-1);
+    background-color: var(--back-color);
+    color: var(--win-button-active-color);
+}
+
+.fs-add-divider {
+    border-bottom: 1px solid var(--card-color);
+}
+
+.fs-add-input {
+    height: 1.35rem;
+    min-width: 200px;
+    background-color: var(--card-color-t);
+    border-radius: var(--border-radius-1);
+}
+
+.fs-add-input::placeholder {
+    color: var(--placeholder-color);
+    border: 0;
+}
+
+.fs-create-button {
+    border-radius: var(--border-radius-1);
+    color: var(--win-button-color);
+    cursor: pointer;
+}
+
+.fs-create-button:hover {
+    color: var(--card-color);
+}
+
+.aside-fs-dirent .aside-close-file-button {
+    color: transparent;
+}
+
+.aside-fs-dirent:hover .aside-close-file-button {
+    color: var(--win-button-color);
+}
+
+.aside-fs-dirent .aside-close-file-button:hover {
+    color: brown;
+}

@@ -2,7 +2,7 @@
     position: absolute;
     height: var(--nav-h);
     pointer-events: none;
-    width: 20px;
+    width: 10px;
     background: linear-gradient(to right,  rgba(0, 0, 0, 0.304),  var(--card-color-t));
 }
 
