@@ -40,9 +40,11 @@ function FileManagerPage (props) {
             name : "open project",
             icon : <FontAwesomeIcon icon={faBoxOpen} />,
             action : () => {
+                let folderRes = 0
                 if (activeDirent !== undefined)
-                    openFolder(localDirents[activeDirent].name)
-                openProject()
+                    folderRes = openFolder(localDirents[activeDirent].name)
+                if (folderRes === 0)
+                    openProject()
             }
         },
         openFolder : {
@@ -111,7 +113,9 @@ function FileManagerPage (props) {
 
     let openFolder = function (folderName) {
         try {
-            window.fs.openFolder(folderName)
+            let res = window.fs.openFolder(folderName)
+            if (res === -1)
+                return res
             getFolderContent()
         } catch (e) {
             return -1
@@ -141,6 +145,7 @@ function FileManagerPage (props) {
     }
 
     let openProject = function () {
+        props.state.setOpenedFiles([])
         let projectObj = {
             rootDir : window.fs.getCurrentPath(),
             tree : [
@@ -283,9 +288,9 @@ function FileManagerAside (props) {
         }
     }
 
-    let compareIndexes = function (indexex0, indexes1) {
-        if (indexex0.length === indexes1.length)
-            return indexex0.every((el, i) => el === indexes1[i])
+    let compareIndexes = function (indexes0, indexes1) {
+        if (indexes0.length === indexes1.length)
+            return indexes0.every((el, i) => el === indexes1[i])
         return false
     }
 
@@ -299,21 +304,33 @@ function FileManagerAside (props) {
         let {rootDir, tree} = props.state.projectFiles
         tree = _.cloneDeep(tree)
         return dirent.indexes.reduce((prevString, curIndex) => {
-            let newPath = window.fs.pathJoin(prevString, tree[curIndex].name)
+            let newPath = window.fs.pathJoin([prevString, tree[curIndex].name])
             tree = tree[curIndex].content
             return newPath
         }, rootDir)
     }
 
     let setOpenedFiles = function (path, dirent) {
-        let openedFiles = props.state.openedFiles
-        openedFiles.push({
-            name : dirent.name,
-            path : path,
-            indexes : dirent.indexes
+        window.fs.readFile(path, dirent.name)
+        .then(result => {
+            let openedFiles = props.state.openedFiles
+            openedFiles = openedFiles.map(file => {
+                if (file.active)
+                    file.active = false
+                return file
+            })
+            openedFiles.push({
+                name : dirent.name,
+                path : path,
+                indexes : dirent.indexes || [],
+                code : result.data,
+                active : true
+            })
+            props.state.setOpenedFiles(openedFiles)
         })
-        props.state.setOpenedFiles(openedFiles)
-        props.state.setProjectFiles({...props.state.projectFiles, forceUpd : true})
+        .catch(error => {
+            console.log(error.err)
+        })
     }
 
     let openFile = function (dirent) {
@@ -323,12 +340,23 @@ function FileManagerAside (props) {
             } else {
                 setOpenedFiles(props.state.projectFiles.rootDir, dirent)
             }
+        } else {
+            let openedFiles = props.state.openedFiles
+            openedFiles = openedFiles.map(file => {
+                if (file.active)
+                    file.active = false
+                if (file.name === dirent.name && compareIndexes(file.indexes, dirent.indexes || []))
+                    file.active = true
+                return file
+            })
+            props.state.setOpenedFiles(openedFiles)
         }
     }
 
     let closeFile = function (dirent) {
         let files = props.state.openedFiles
         files = files.filter(file => file.path + file.name !== dirent.path + dirent.name)
+        files[files.length - 1].active = true
         props.state.setOpenedFiles(files)
     }
 
@@ -349,14 +377,20 @@ function FileManagerAside (props) {
             }
         }
 
+        let activeItem = props.state.openedFiles.find(file => file.active)
+        if (!activeItem || !activeItem.indexes)
+            activeItem = ""
+
         let listUI = traverseAndRender(groupList, (dirent, indexes) => {
             let offset = indexes.map(() => <div className="ps-2"></div>)
             offset.push(<div className="ps-2"></div>)
             indexes = indexes.toString()
-        
+
+            let customClasses = dirent.active || activeItem.indexes && ((!activeItem.indexes.length && activeItem.name === dirent.name) || activeItem.indexes.toString() === indexes) ? "active-aside-fs-item" : ""
+
             if (!dirent.content) // this is File
-                return(
-                    <div key={indexes} className="d-flex justify-content-start aside-fs-dirent" onDoubleClick={() => openFile(dirent)}>
+                return (
+                    <div key={indexes} className={`d-flex justify-content-start aside-fs-dirent ${customClasses}`} onDoubleClick={() => openFile(dirent)}>
                         { allowRm && 
                             <div className="aside-close-file-button ms-4" onClick={() => closeFile(dirent)}>
                                 <FontAwesomeIcon icon={faXmark} />
@@ -372,7 +406,7 @@ function FileManagerAside (props) {
                 )
             if (dirent.content) { // this is Directory
                 return (
-                    <div key={indexes} className="d-flex aside-fs-dirent" onClick={e => {expDir(indexes, e)}}>
+                    <div key={indexes} className={`d-flex aside-fs-dirent ${customClasses}`} onClick={e => {expDir(indexes, e)}}>
                         {offset}
                         <div className={`d-flex align-items-center`}>
                             <FontAwesomeIcon icon={faChevronRight} className="aside-chevron" id={indexes} style={{transform : "rotate(0)"}} />

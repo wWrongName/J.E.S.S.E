@@ -1,0 +1,23 @@
+#code-dom {
+    width: 100%;
+    white-space: nowrap;
+    font-family: "Consolas";
+    color: whitesmoke;
+    overflow: auto;
+    margin-bottom: var(--nav-h);
+}
+
+#code-dom::-webkit-scrollbar {
+    background-color: var(--back-color);
+    width: 10px;
+    height: 12px;
+}
+
+#code-dom::-webkit-scrollbar-thumb {
+    background-color: var(--placeholder-color);
+    cursor: pointer;
+}
+
+#code-dom::-webkit-scrollbar-corner {
+    background-color: var(--back-color);
+}

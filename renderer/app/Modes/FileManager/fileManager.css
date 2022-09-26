@@ -144,3 +144,11 @@
 .aside-fs-dirent .aside-close-file-button:hover {
     color: brown;
 }
+
+.active-aside-fs-item {
+    background-color: var(--active-fs-item-color);
+    border-top: 1px solid var(--back-color);
+    border-bottom: 1px solid var(--back-color);
+    border-left: 1px solid aquamarine;
+    color: var(--win-button-active-color);
+}

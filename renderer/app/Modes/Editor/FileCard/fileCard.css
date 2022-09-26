@@ -1,17 +1,46 @@
 .file-card {
     width: fit-content;
     height: 100%;
-    border-radius: var(--border-radius-1);
+    margin-top: 6px;
     background-color: var(--file-card-color);
     color: var(--win-button-color);
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
     cursor: pointer;
 }
 
-.file-card:hover {
+.file-card-wrap:hover .file-card {
     /* background-color: var(--file-card-active-color); */
     color: var(--win-button-active-color);
+    background-color: var(--back-color);
+}
+
+.file-card-wrap:hover {
+    /* background-color: var(--file-card-active-color); */
+    color: var(--win-button-active-color);
+    background-color: var(--back-color);
 }
 
 .close-file-button:hover {
     color: rgba(165, 50, 50, 0.747);
+}
+
+.active-file-card {
+    background-color: var(--back-color);
+}
+
+.file-card-wrap {
+    cursor: pointer;
+    padding-bottom: 15px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+[active-fc="active-file-card"] {
+    border-top: 1px solid aquamarine;
+    color: var(--win-button-active-color);
+}
+
+[active-fc="active-file-card"] .file-card {
+    color: var(--win-button-active-color);
 }

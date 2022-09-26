@@ -3,7 +3,7 @@
     height: var(--nav-h);
     pointer-events: none;
     width: 10px;
-    background: linear-gradient(to right,  rgba(0, 0, 0, 0.304),  var(--card-color-t));
+    /* background: linear-gradient(to right,  rgba(0, 0, 0, 0.304),  var(--card-color-t)); */
 }
 
 .panel-side-right {
@@ -12,5 +12,5 @@
     height: var(--nav-h);
     pointer-events: none;
     width: 20px;
-    background: linear-gradient(to left,  rgba(0, 0, 0, 0.304),  var(--card-color-t));
+    /* background: linear-gradient(to left,  rgba(0, 0, 0, 0.304),  var(--card-color-t)); */
 }

@@ -10,13 +10,16 @@ let dirHistory = [__dirname]
 let getCurrentPath = () => dirHistory[dirHistory.length - 1]
 
 let pathJoin = function (args) {
+    console.log(args)
     if (Array.isArray(args)) {
         if (!args.length)
             return getCurrentPath()
+        console.log(args)
         if (args.length === 1)
             return args[0]
         return args.reduce((prev, cur) => path.join(prev, cur), "")
     }
+    console.log(args)
     return path.join(args)
 }
 
@@ -24,6 +27,9 @@ let changePath = function (folderName="") {
     let end = dirHistory.length - 1
     let newPath = path.join(dirHistory[end], folderName)
     let pathRelative = path.relative(newPath, dirHistory[end])
+
+    if (!fs.statSync(newPath).isDirectory())
+        return -1
 
     dirHistory.push(newPath)
     dirHistory[end] = pathRelative
@@ -42,7 +48,7 @@ let getFolderContent = function (dirPath=[getCurrentPath()]) {
     return new Promise((resolve, reject) => {
         fs.readdir(pathJoin(dirPath), {withFileTypes: true, encoding: "utf-8"}, (err, files) => {
             if (err) {
-                console.log(err)
+                goBack()
                 reject({err: err, content: []})
                 return
             }
@@ -55,6 +61,15 @@ let getFolderContent = function (dirPath=[getCurrentPath()]) {
                 return {
                     ...direntType,
                     name : file.name
+                }
+            }).sort((a, b) => {
+                if (a.isDir && b.isDir) {
+                    return a.name.localeCompare(b.name)
+                } else {
+                    if (a.isDir)
+                        return -1
+                    else    
+                        return 1
                 }
             })})
         })
@@ -110,6 +125,22 @@ let deleteDirent = function (dirent) {
     })
 }
 
+let readFile = function (dirPath, fileName) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(path.join(dirPath, fileName), {encoding: "utf-8"}, (err, data) => {
+            if (err) {
+                console.log(err)
+                reject({err: err})
+                return
+            }
+            resolve({
+                success: true,
+                data: data
+            })
+        })
+    })
+}
+
 contextBridge.exposeInMainWorld(
     "fs", {
         getSpecialFolderContent: getFolderContent,
@@ -122,6 +153,7 @@ contextBridge.exposeInMainWorld(
         getSep : path.sep,
         getCurrentPath,
         pathJoin,
+        readFile,
         goBack
     }
 )
