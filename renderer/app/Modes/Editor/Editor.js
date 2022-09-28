@@ -9,8 +9,6 @@ import "./editor.css"
 
 
 function EditorPage(props) {
-    let [text, setText] = useState("123\n123\n123\n1g23\n12f3\n123\n")
-
     if (props.state.openedFiles.length) {
         let activeFile = props.state.openedFiles.find(file => file.active)
         return (

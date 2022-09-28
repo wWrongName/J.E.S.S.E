@@ -73,7 +73,7 @@ function Root () {
     return(
         <>
             <Header />
-            <Aside items={items} openPage={openPage} activeItem={items[activeItem]} />
+            <Aside items={items} openPage={openPage} activeItem={activeItem} />
             <Draggable />
             <Pages activeItem={items[activeItem]} />
         </>

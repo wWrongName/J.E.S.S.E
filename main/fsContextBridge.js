@@ -10,7 +10,6 @@ let dirHistory = [__dirname]
 let getCurrentPath = () => dirHistory[dirHistory.length - 1]
 
 let pathJoin = function (args) {
-    console.log(args)
     if (Array.isArray(args)) {
         if (!args.length)
             return getCurrentPath()
@@ -19,7 +18,6 @@ let pathJoin = function (args) {
             return args[0]
         return args.reduce((prev, cur) => path.join(prev, cur), "")
     }
-    console.log(args)
     return path.join(args)
 }
 

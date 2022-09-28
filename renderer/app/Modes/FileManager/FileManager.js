@@ -353,10 +353,18 @@ function FileManagerAside (props) {
         }
     }
 
+
     let closeFile = function (dirent) {
         let files = props.state.openedFiles
-        files = files.filter(file => file.path + file.name !== dirent.path + dirent.name)
-        files[files.length - 1].active = true
+        let prevIndex = null
+        files = files.filter((file, index) => {
+            if (file.path + file.name !== dirent.path + dirent.name)
+                return true
+            if (file.active)
+                prevIndex = index
+        })
+        if (files.length && prevIndex !== null)
+            files[prevIndex !== files.length ? prevIndex : prevIndex - 1].active = true
         props.state.setOpenedFiles(files)
     }
 

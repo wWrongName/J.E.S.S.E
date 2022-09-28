@@ -13,6 +13,5 @@
 }
 
 .active-aside-button {
-    font-size: 10px;
     color: var(--aside-active-text-color);
 }

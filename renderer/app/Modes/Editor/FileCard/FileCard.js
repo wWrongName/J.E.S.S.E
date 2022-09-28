@@ -9,7 +9,15 @@ import "./fileCard.css"
 function FileCard (props) {
     let closeFile = function (path, name) {
         let files = props.openedFiles
-        files = files.filter(file => file.path + file.name !== path + name)
+        let prevIndex = null
+        files = files.filter((file, index) => {
+            if (file.path + file.name !== path + name)
+                return true
+            if (file.active)
+                prevIndex = index
+        })
+        if (files.length && prevIndex !== null)
+            files[prevIndex !== files.length ? prevIndex : prevIndex - 1].active = true
         props.setOpenedFiles(files)
     }
 

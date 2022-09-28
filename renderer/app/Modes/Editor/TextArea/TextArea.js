@@ -26,7 +26,7 @@ let TextArea = (props) => {
         let strBuffer = []
         for (let char of code) {
             if (char === '\n') {
-                let strDOM = <div key={codeDOM.length.toString()}>
+                let strDOM = <div key={codeDOM.length.toString()} className="editor-code-str">
                     {strBuffer}
                 </div>
                 codeDOM.push(strDOM)
@@ -45,13 +45,24 @@ let TextArea = (props) => {
             }
             strBuffer.push(charDOM)
         }
+        codeDOM.push(
+            <div key={codeDOM.length.toString()} className="editor-code-str">
+                {strBuffer}
+            </div>
+        )
     }
 
     convertCodeToDOM(props.code)
     
     return (
         <div id="code-dom" className="px-3 py-2">
-            {codeDOM}
+            {
+                codeDOM.map((str, i) => (
+                    <div className="d-flex align-items-center editor-string">
+                        <div className="editor-str-num">{i}</div>{str}
+                    </div>
+                ))
+            }
         </div>
     )
 }
