@@ -8,24 +8,25 @@
     cursor: text;
 }
 
-#code-dom::-webkit-scrollbar {
+#code-dom div::-webkit-scrollbar {
     background-color: var(--back-color);
     width: 10px;
-    height: 12px;
+    height: 10px;
+    cursor: pointer !important;
 }
 
-#code-dom::-webkit-scrollbar-thumb {
+#code-dom div::-webkit-scrollbar-thumb {
     background-color: var(--placeholder-color);
     cursor: pointer;
 }
 
-#code-dom::-webkit-scrollbar-corner {
+#code-dom div::-webkit-scrollbar-corner {
     background-color: var(--back-color);
 }
 
 .editor-str-num {
     text-align: right;
-    width: 50px;
+    width: 20px;
     padding-right: 20px;
     margin-left: 10px;
     margin-right: 15px;

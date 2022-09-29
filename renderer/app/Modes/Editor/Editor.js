@@ -10,7 +10,6 @@ import "./editor.css"
 
 function EditorPage(props) {
     if (props.state.openedFiles.length) {
-        let activeFile = props.state.openedFiles.find(file => file.active)
         return (
             <div className="h-100">
                 <ShadowSides 
@@ -24,7 +23,7 @@ function EditorPage(props) {
                                         active={file.active}
                                         openedFiles={props.state.openedFiles}
                                         setOpenedFiles={props.state.setOpenedFiles}
-                                        key={index}
+                                        key={index.toString()}
                                     />
                                 )
                             })}
@@ -33,7 +32,10 @@ function EditorPage(props) {
                     scrollLeft={".top-panel"}
                 />
                 <div className="d-flex h-100 text-monospace">
-                    <TextArea code={activeFile.code}/>
+                    <TextArea 
+                        openedFiles={props.state.openedFiles} 
+                        setOpenedFiles={props.state.setOpenedFiles}
+                    />
                 </div>
             </div>
         )

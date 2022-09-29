@@ -4,6 +4,7 @@ module.exports = {
     window : {
         minWAside : 100,
         minWPages : 530,
+        renderingChunkSize : 50000,
     },
     path_history_size : 10,
     mode : MODE,

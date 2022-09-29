@@ -13,7 +13,6 @@ let pathJoin = function (args) {
     if (Array.isArray(args)) {
         if (!args.length)
             return getCurrentPath()
-        console.log(args)
         if (args.length === 1)
             return args[0]
         return args.reduce((prev, cur) => path.join(prev, cur), "")
