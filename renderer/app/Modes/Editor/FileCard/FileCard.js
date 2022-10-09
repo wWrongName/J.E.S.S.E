@@ -21,7 +21,9 @@ function FileCard (props) {
         props.setOpenedFiles(files)
     }
 
-    let openFile = function (path, name) {
+    let openFile = function (e,path, name) {
+        if (e.target.tagName === "path" || e.target.tagName === "svg")
+            return
         let files = props.openedFiles
         files = files.map(file => {
             if (file.active)
@@ -36,7 +38,7 @@ function FileCard (props) {
     let customClasses = props.active ? "active-file-card" : ""
 
     return(
-        <div className={`pt-1 file-card-wrap ${customClasses}`} active-fc={customClasses} onDoubleClick={() => openFile(props.path, props.text)}>
+        <div className={`pt-1 file-card-wrap ${customClasses}`} active-fc={customClasses} onClick={(e) => openFile(e,props.path, props.text)}>
             <div className={`d-flex align-items-center file-card pe-2 px-2 ${customClasses}`}>
                 <div className="px-2">{props.text}</div>
                 <FontAwesomeIcon icon={faXmark} className="close-file-button" onClick={() => closeFile(props.path, props.text)}/>

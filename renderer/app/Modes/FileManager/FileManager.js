@@ -333,7 +333,7 @@ function FileManagerAside (props) {
         })
     }
 
-    let openFile = function (dirent) {
+    let openFile = function (e, dirent) {
         if (fileIsNotOpened(dirent)) {
             if (dirent.indexes) {
                 setOpenedFiles(setPath(dirent), dirent)
@@ -341,6 +341,8 @@ function FileManagerAside (props) {
                 setOpenedFiles(props.state.projectFiles.rootDir, dirent)
             }
         } else {
+            if (e.target.tagName === "path" || e.target.tagName === "svg")
+                return
             let openedFiles = props.state.openedFiles
             openedFiles = openedFiles.map(file => {
                 if (file.active)
@@ -395,10 +397,22 @@ function FileManagerAside (props) {
             indexes = indexes.toString()
 
             let customClasses = dirent.active || activeItem.indexes && ((!activeItem.indexes.length && activeItem.name === dirent.name) || activeItem.indexes.toString() === indexes) ? "active-aside-fs-item" : ""
-
             if (!dirent.content) // this is File
                 return (
-                    <div key={indexes} className={`d-flex justify-content-start aside-fs-dirent ${customClasses}`} onDoubleClick={() => openFile(dirent)}>
+                    <div 
+                        key={indexes} 
+                        className={`d-flex justify-content-start aside-fs-dirent ${customClasses}`} 
+                        onDoubleClick={e => {
+                            if (allowRm)
+                                return
+                            openFile(e, dirent)
+                        }}
+                        onClick={e => {
+                            if (!allowRm)
+                                return
+                            openFile(e, dirent)
+                        }}
+                    >
                         { allowRm && 
                             <div className="aside-close-file-button ms-4" onClick={() => closeFile(dirent)}>
                                 <FontAwesomeIcon icon={faXmark} />
@@ -428,10 +442,10 @@ function FileManagerAside (props) {
         return(listUI)
     }
 
-    let renderAsideGroup = function (title, groupList, allowRm) {
+    let renderAsideGroup = function (title, groupList, customClasses="", allowRm) {
         let id = "chevron-" + title
         return(
-            <div className={id}>
+            <div className={`${id} ${customClasses}`}>
                 <div className={`d-flex align-items-center aside-fs-group-header ms-2 mt-1 ${title}`} onClick={() => {chevronOpenClose(id)}}>
                     <FontAwesomeIcon icon={faChevronRight} className="aside-chevron" opened="true"/>
                     <div className="ms-2">{title}</div>
@@ -457,9 +471,9 @@ function FileManagerAside (props) {
     // }
 
     return(
-        <div className="py-1 overflow-auto aside-fs-card">
-            {renderAsideGroup("open", props.state.openedFiles, true)}
-            {renderAsideGroup("project", projectContent)}
+        <div className="py-1 aside-fs-card overflow-auto">
+            {renderAsideGroup("open", props.state.openedFiles, "", true)}
+            {renderAsideGroup("project", projectContent, "project-fs-group")}
         </div>
     )
 }

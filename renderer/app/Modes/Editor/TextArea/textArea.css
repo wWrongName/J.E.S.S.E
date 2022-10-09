@@ -5,19 +5,17 @@
     color: whitesmoke;
     overflow: auto;
     margin-bottom: var(--nav-h);
-    cursor: text;
+    cursor: pointer;
 }
 
 #code-dom div::-webkit-scrollbar {
     background-color: var(--back-color);
-    width: 10px;
-    height: 10px;
-    cursor: pointer !important;
+    width: 12px;
+    height: 12px;
 }
 
 #code-dom div::-webkit-scrollbar-thumb {
     background-color: var(--placeholder-color);
-    cursor: pointer;
 }
 
 #code-dom div::-webkit-scrollbar-corner {
@@ -25,23 +23,47 @@
 }
 
 .editor-str-num {
+    left: 0;
+    position: fixed;
     text-align: right;
     width: 20px;
-    padding-right: 20px;
-    margin-left: 10px;
-    margin-right: 15px;
+    padding-right: 45px;
+    padding-left: 30px;
+    height: 24px;
+    margin-top: 1px;
     color: var(--win-button-color);
+    background-color: var(--card-color);
     font-size: 0.9rem;
+    cursor: default;
 }
 
 .editor-string {
     height: 24px;
+    width: 100%;
 }
 
-.editor-string:hover {
-    background-color: var(--back-color);
+.active-editor-str-num {
+    color: var(--win-button-active-color);
 }
 
 .editor-code-str {
-    padding-left: 10px;
+    margin-left: 80px;
+    width: 100%;
+    cursor: text;
+}
+
+.active-editor-code-str {
+    background-color: var(--active-fs-item-color);
+}
+
+.editor-char {
+    animation: cursor 1s infinite step-end;
+    border-left: 2px solid white;
+    margin-left: -2px;
+}
+
+@keyframes cursor {
+    50% {
+        border-left: 2px solid transparent;
+    }
 }

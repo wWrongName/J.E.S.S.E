@@ -95,8 +95,16 @@
 }
 
 .chevron-after {
-    overflow : hidden;
+    overflow: hidden;
     height : max-content;
+}
+
+.aside-fs-card::-webkit-scrollbar {
+    width: 10px;
+}
+
+.aside-fs-card::-webkit-scrollbar-thumb {
+    background-color: var(--back-color);
 }
 
 .fs-add-dirent {
