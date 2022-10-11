@@ -3,6 +3,7 @@ import { FixedSizeList as List } from "react-window"
 
 import eventEmitter from "../../../../shared/utils/eventEmitter"
 import {commands, Document} from "../../../../shared/utils/Document"
+import colorScheme from "../../../../shared/colorSchemes/basicJSol"
 
 import "./textArea.css"
 
@@ -307,13 +308,47 @@ let TextArea = (props) => {
 
     let renderCodeString = function (strModel, index) {
         let strDOM = []
-        for (let char of strModel) {
-            let x = strDOM.length.toString()
-            strDOM.push(
-                <span key={x} x={x} className={`${index === cursor.y && strDOM.length === cursor.x ? "editor-char" : ""}`} onMouseDown={handleCursorAction}>
-                    {char === ' ' || char === "\r" ? <>&nbsp;</> : char}
-                </span>
-            )
+
+        let renderWord = (word, color=colorScheme.default) => {
+            for (let char of word) {
+                let x = strDOM.length.toString()
+                strDOM.push(
+                    <span 
+                        key={x} 
+                        x={x} 
+                        className={`${index === cursor.y && strDOM.length === cursor.x ? "editor-char" : ""}`} 
+                        onMouseDown={handleCursorAction}
+                        style={{color}}
+                    >
+                        {char === ' ' || char === "\r" ? <>&nbsp;</> : char}
+                    </span>
+                )
+            }
+        }
+
+        let lexemeBuffer = ""
+        for (let i in strModel) {
+            let char = strModel[i]
+            let detected = colorScheme.words[char]
+            if (detected !== undefined) {
+                renderWord(lexemeBuffer)
+                renderWord(char, colorScheme.colors[detected])
+                lexemeBuffer = ""
+                continue
+            }
+            lexemeBuffer += char
+            if (char === " " || char === "\r") {
+                renderWord(lexemeBuffer)
+                lexemeBuffer = ""
+                continue
+            }
+            detected = colorScheme.words[lexemeBuffer]
+            if (detected !== undefined) {
+                if (detected === "type-name" && i < strModel.length-1 && strModel[Number(i)+1] !== " " && !Number.isNaN(Number(strModel[Number(i)+1])))
+                    continue
+                renderWord(lexemeBuffer, colorScheme.colors[detected])
+                lexemeBuffer = ""
+            }
         }
         
         let customClass = cursor.y === index ? "active-editor-code-str" : ""
