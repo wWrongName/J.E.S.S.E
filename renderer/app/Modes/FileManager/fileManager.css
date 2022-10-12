@@ -158,5 +158,6 @@
     border-top: 1px solid var(--back-color);
     border-bottom: 1px solid var(--back-color);
     border-left: 1px solid aquamarine;
+    margin-left: 1px;
     color: var(--win-button-active-color);
 }

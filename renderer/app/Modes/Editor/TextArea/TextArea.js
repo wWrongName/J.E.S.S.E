@@ -20,11 +20,14 @@ let TextArea = (props) => {
     useEffect(() => {
         let element = document.getElementById(CODE_DOM_ID).firstChild
         let scroll = function (e) {
-            e.preventDefault()
-            if (e.shiftKey)
+            if (e.deltaX) {
+                e.preventDefault()
+                element.scrollLeft += (e.deltaX / 2)
+            }
+            if (e.shiftKey) {
+                e.preventDefault()
                 element.scrollLeft += (e.deltaY / 2)
-            else
-                element.scrollTop += (e.deltaY / 2)
+            }
         }
         let detectMouseEnter = () => element.addEventListener("wheel", scroll, { passive: false, capture: false })
         let rmDetector = () => document.removeEventListener("wheel", scroll)
