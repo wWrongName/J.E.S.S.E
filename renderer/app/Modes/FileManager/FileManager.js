@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faRotateLeft, faQuestion, faBoxOpen, faFolderOpen, faRectangleXmark, faTrash, faFolder, faFileLines, faChevronRight, faPlusCircle, faFolderClosed, faFile, faFileCirclePlus, faFolderPlus, faX, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import ErrorModal from "../../../shared/components/Modal/ErrorModal"
+import eventEmitter from "../../../shared/utils/eventEmitter"
 
 import "./fileManager.css"
 import traverseAndRender from "../../../shared/utils/traverseAndRender"
@@ -30,6 +31,12 @@ function FileManagerPage (props) {
     }
 
     useEffect(getFolderContent, [])
+    const [pageCompact, setPageCompact] = useState(false)
+    useEffect(() => {
+        return eventEmitter.subscribe("drag_aside_border", borderOffset => {
+            setPageCompact((window.innerWidth - borderOffset < 520).toString())
+        })
+    }, [])
 
     let [modalBody, setModalBody] = useState()
     let [activeDirent, setActiveDirent] = useState()
@@ -228,8 +235,8 @@ function FileManagerPage (props) {
                     {controlOrder.map((controller, index) => {
                         let button = controls[controller]
                         return(
-                            <div className={`mx-2 file-manager-controller text-center ${FILE_MANAGER_DIRENT_CLASS}`} onClick={button.action} key={index}>
-                                {button.icon} {button.name}
+                            <div title={pageCompact ? button.name : ""} className={`d-flex align-items-center mx-2 file-manager-controller text-center ${FILE_MANAGER_DIRENT_CLASS}`} onClick={button.action} key={index.toString()} page-compact={pageCompact.toString()}>
+                                {button.icon} <div className="file-manager-controller-text ms-1">{button.name}</div>
                             </div>
                         )
                     })}
@@ -241,9 +248,9 @@ function FileManagerPage (props) {
                     })}
                 </div>
                 <div className="fm-footer py-2 px-5 d-flex justify-content-between align-items-center"> 
-                    <div className={`text-center`}>
+                    <div className={`text-center d-flex align-items-center text-truncate`}>
                         <FontAwesomeIcon icon={faPlusCircle} className="me-2 file-manager-controller" onClick={() => {chMkDirentForm(!mkDirentForm)}} />
-                        {itemsLen} {itemsLen === 1 ? "item" : "items"}
+                        <div>{itemsLen} {itemsLen === 1 ? "item" : "items"}</div>
                     </div>
                     { mkDirentForm && 
                         <div className="fs-add-dirent p-1">
@@ -257,12 +264,12 @@ function FileManagerPage (props) {
                             <div className="pt-1 d-flex">
                                 <input id="fs-create-folder" className="text-center fs-add-input px-2" placeholder="folder" />
                                 <div className="fs-create-button px-2 ms-1 d-flex align-items-center" onClick={() => createDirent("folder")}>
-                                    <FontAwesomeIcon icon={faFolderPlus} />
+                                    <FontAwesomeIcon icon={faFolderPlus}/>
                                 </div>
                             </div>
                         </div>
                     }
-                    <div className="text-truncate">
+                    <div className="ms-2 text-truncate">
                         {window.fs.getCurrentPath()}
                     </div>
                 </div>

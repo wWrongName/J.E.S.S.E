@@ -1,40 +1,26 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import { Form, InputGroup } from "react-bootstrap"
 
-import Dropdown from "../../../shared/components/Dropdown/Dropdown"
-
+import CustomDropdown from "../../../shared/components/Dropdown/Dropdown"
+import eventEmitter from "../../../shared/utils/eventEmitter"
+import { settings } from "../../../shared/utils/settings"
 
 import "./settings.css"
+
+
 let SettingsPage = function () {
-    const settingsMap = {
-        privateKey : {
-            name : "Private key",
-            data : "a1j34jb5j"
-        },
-        lang : {
-            name : "Default language",
-            data : ["English", "Русский"]
-        },
-        compiler : {
-            name : "Compiler version",
-            data : ""
-        },
-        defaultNetwork : {
-            name : "Default network",
-            data : []
-        },
-        defPath : {
-            name : "Default work space",
-            data : ""
-        }
-    }
+    const [settingsMap, setSMap] = useState(settings.glob)
+    useEffect(() => eventEmitter.subscribe("settings", () => {
+        setSMap({...settings.glob, force: !settingsMap.force})
+    }), [])
 
-
-    let renderDataField = (item) => {
+    let renderDataField = (item, propName) => {
         if (typeof item.data === "object") {
             if (Array.isArray(item.data)) {
                 return (
-                    <Dropdown />
+                    <CustomDropdown name={item.name} items={item.data} action={value => {
+                        eventEmitter.emit("settings", {name: propName, value})
+                    }} i={item.active}/>
                 )
             }
         } 
@@ -45,9 +31,8 @@ let SettingsPage = function () {
                         {item.name}
                     </InputGroup.Text>
                     <Form.Control
-                        aria-label="Default"
                         value={item.data}
-                        aria-describedby="inputGroup-sizing-default"
+                        onChange={e => eventEmitter.emit("settings", {name: propName, value: e.target.value})}
                     />
                 </InputGroup>
             )
@@ -57,7 +42,7 @@ let SettingsPage = function () {
 
     const [filter, setFilter] = useState("")
 
-    let filtered = Object.keys(settingsMap).filter(item => new RegExp(`.*${filter}.*`).test(settingsMap[item].name.toLowerCase()))
+    let filtered = Object.keys(settingsMap).filter(item => item !== "force" && new RegExp(`.*${filter}.*`).test(settingsMap[item].name.toLowerCase()))
     return (
         <div className="py-2 px-3">
             <Form className="d-flex">
@@ -70,9 +55,9 @@ let SettingsPage = function () {
                 />
             </Form>
             <div className="my-4">
-                {filtered.map(prop => {
+                {filtered.map((prop, i) => {
                     return (
-                        <div>{renderDataField(settingsMap[prop])}</div>
+                        <div key={i.toString()}>{renderDataField(settingsMap[prop], prop)}</div>
                     )
                 })}
             </div>

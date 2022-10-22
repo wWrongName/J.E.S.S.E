@@ -100,6 +100,6 @@ module.exports = {
         "data-location" : "brown",
         "number-unit" : "lightskyblue",
         "quotation-marks" : "darkorange",
-        "math-ops" : "lightskyblue"
+        "math-ops" : "brown"
     }
 }

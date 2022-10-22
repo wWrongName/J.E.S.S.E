@@ -52,6 +52,10 @@
     font-size: 0.9rem;
 }
 
+[page-compact = "true"] .file-manager-controller-text {
+    display: none;
+}
+
 .aside-fs-group-header {
     color: var(--win-button-color);
     cursor: pointer;
