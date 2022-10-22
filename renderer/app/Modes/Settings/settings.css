@@ -1,0 +1,30 @@
+.settings-item {
+    color: var(--win-button-color);
+}
+
+.settings-search-button {
+    color: var(--win-button-color);
+    border-color: var(--win-button-color);
+    box-shadow: none;
+}
+
+.settings-search-button:hover {
+    background-color: transparent;
+    border: 1px solid var(--win-button-active-color);
+}
+
+.settings-search-button:active {
+    background: var(--win-button-color);
+}
+
+.settings-search-field {
+    background-color: var(--card-color);
+    border-color: var(--win-button-color);
+}
+
+.settings-search-field:focus {
+    color: var(--win-button-active-color);
+    background-color: var(--card-color);
+    border-color: var(--win-button-color);
+    box-shadow: none !important;
+}

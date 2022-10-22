@@ -14,6 +14,7 @@ import Pages from "./Pages/Pages"
 import Header from "./Header/Header"
 import Draggable from "./Draggable/Draggable"
 import {FileManagerAside, FileManagerPage} from "./Modes/FileManager/FileManager"
+import {SettingsPage} from "./Modes/Settings/Settings"
 import {EditorPage} from "./Modes/Editor/Editor"
 
 window.addEventListener("resize", function(event) {
@@ -26,7 +27,7 @@ window.addEventListener("resize", function(event) {
 function Root () {
     let [projectFiles, setProjectFiles] = useState({})
     let [openedFiles, setOpenedFiles] = useState([])
-    let [activeItem, setActiveItem] = useState(1)
+    let [activeItem, setActiveItem] = useState(4)
 
     let openPage = function (name) {
         items.forEach((item, index) => {
@@ -67,6 +68,8 @@ function Root () {
         {
             name : "settings",
             icon : <FontAwesomeIcon icon={faEllipsis} />,
+            aside : undefined,
+            page : <SettingsPage />
         }
     ]
 
