@@ -1,11 +1,35 @@
-.settings-item {
+.settings-item div input, .settings-item div button, .settings-item div span {
+    background-color: var(--card-color) !important;
+    border-color: var(--back-color) !important;
     color: var(--win-button-color);
+    box-shadow: none !important;
+}
+
+.settings-item:hover div span {
+    color: var(--win-button-active-color) !important;
+}
+
+
+.settings-item div input:focus {
+    color: var(--win-button-active-color);
+}
+
+.settings-item div span {
+    color: var(--win-button-color);
+}
+
+.settings-item div button:active, 
+.settings-item div button:focus, 
+.settings-item div button:hover {
+    background-color: var(--card-color);
+    border-color: var(--back-color);
+    color: var(--win-button-active-color);
 }
 
 .settings-search-button {
     color: var(--win-button-color);
     border-color: var(--win-button-color);
-    box-shadow: none;
+    box-shadow: none !important;
 }
 
 .settings-search-button:hover {
@@ -19,7 +43,11 @@
 
 .settings-search-field {
     background-color: var(--card-color);
-    border-color: var(--win-button-color);
+    border-color: var(--back-color);
+}
+
+.settings-search-field::placeholder {
+    color: var(--win-button-color);
 }
 
 .settings-search-field:focus {

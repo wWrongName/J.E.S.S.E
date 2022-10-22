@@ -1,3 +1,23 @@
 .input-group .dropdown-toggle {
-    width: 50%;
+    width: 75%;
+}
+
+.input-group div {
+    width: max-content;
+    border: 1px solid var(--back-color);
+    /* border-radius: 0 0 5px 5px; */
+    margin-left: 5%;
+    background-color: var(--card-color);
+}
+
+.settings-dropdown-item {
+    color: var(--win-button-color);
+    border-left: 1px solid transparent;
+}
+
+.settings-dropdown-item:active,
+.settings-dropdown-item:hover {
+    background-color: var(--card-color);
+    color: var(--win-button-active-color);
+    border-left: 1px solid aquamarine;
 }

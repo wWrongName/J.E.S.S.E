@@ -27,7 +27,7 @@ let SettingsPage = function () {
         if (typeof item.data === "string") {
             return (
                 <InputGroup className="mb-3">
-                    <InputGroup.Text className="w-50">
+                    <InputGroup.Text className="w-25">
                         {item.name}
                     </InputGroup.Text>
                     <Form.Control
@@ -44,20 +44,18 @@ let SettingsPage = function () {
 
     let filtered = Object.keys(settingsMap).filter(item => item !== "force" && new RegExp(`.*${filter}.*`).test(settingsMap[item].name.toLowerCase()))
     return (
-        <div className="py-2 px-3">
+        <div className="py-2 px-3 mx-auto settings">
             <Form className="d-flex">
                 <Form.Control
-                    type="search"
-                    placeholder="..."
+                    placeholder="Search"
                     className="settings-search-field"
-                    aria-label="..."
                     onChange={e => setFilter(e.target.value.toLowerCase())}
                 />
             </Form>
             <div className="my-4">
                 {filtered.map((prop, i) => {
                     return (
-                        <div key={i.toString()}>{renderDataField(settingsMap[prop], prop)}</div>
+                        <div key={i.toString()} className="settings-item">{renderDataField(settingsMap[prop], prop)}</div>
                     )
                 })}
             </div>

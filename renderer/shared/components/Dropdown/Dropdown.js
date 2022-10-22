@@ -6,7 +6,7 @@ import "./dropdown.css"
 const CustomDropdown = function (props) {
     return (
         <InputGroup className="mb-3 w-100">
-            <InputGroup.Text className="w-50">
+            <InputGroup.Text className="w-25">
                 {props.name}
             </InputGroup.Text>
             <DropdownButton
@@ -16,6 +16,7 @@ const CustomDropdown = function (props) {
                     key={i.toString()}
                     eventKey={i.toString()}
                     onClick={() => {props.action(i)}}
+                    className="settings-dropdown-item"
                 >
                     {item}
                 </Dropdown.Item>)}
