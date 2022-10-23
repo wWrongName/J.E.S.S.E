@@ -176,8 +176,10 @@ function FileManagerPage (props) {
             .then(dirents => {
                 dirents.content.forEach((dirent, index) => {
                     let nestedTreeNode = {name: dirent.name}
-                    if (dirent.isFile && objPathIndexes.length) 
-                        nestedTreeNode.indexes = objPathIndexes
+                    if (dirent.isFile) {
+                        nestedTreeNode.indexes = objPathIndexes.slice()
+                        nestedTreeNode.indexes.push(index)
+                    }
                     if (dirent.isDir) {
                         indexes.push(index)
                         promises.push(fillFileTree(dirPath.concat(dirent.name), objPathIndexes.concat([index])))
@@ -310,7 +312,9 @@ function FileManagerAside (props) {
     let setPath = function (dirent) {
         let {rootDir, tree} = props.state.projectFiles
         tree = _.cloneDeep(tree)
-        return dirent.indexes.reduce((prevString, curIndex) => {
+        let tmpIndexes = dirent.indexes.slice()
+        tmpIndexes.pop()
+        return tmpIndexes.reduce((prevString, curIndex) => {
             let newPath = window.fs.pathJoin([prevString, tree[curIndex].name])
             tree = tree[curIndex].content
             return newPath

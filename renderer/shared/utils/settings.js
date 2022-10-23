@@ -3,7 +3,7 @@ import eventEmitter from "./eventEmitter"
 
 class Settings {
     constructor () {
-        this.glob = {
+        let glob = {
             privateKey : {
                 name : "Private key",
                 data : ""
@@ -15,7 +15,8 @@ class Settings {
             },
             compiler : {
                 name : "Compiler version",
-                data : ""
+                data : ["0.8.16", "0.8.17"],
+                active : 0
             },
             defaultNetwork : {
                 name : "Default network",
@@ -24,10 +25,18 @@ class Settings {
             },
             defPath : {
                 name : "Default work space",
-                data : ""
+                data : "",
+                path : true
             }
         }
         
+        const settingsOrder = ["privateKey", "defPath", "language", "compiler", "defaultNetwork"]
+        
+        this.glob = settingsOrder.reduce((prev, cur, i) => {
+            prev[cur] = glob[cur]
+            return prev
+        }, {})
+
         eventEmitter.subscribe("settings", setting => {
             let globData = this.glob[setting.name].data
             if (typeof globData === "object" && Array.isArray(globData))

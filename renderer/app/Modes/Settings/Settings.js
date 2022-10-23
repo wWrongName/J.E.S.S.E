@@ -14,6 +14,10 @@ let SettingsPage = function () {
         setSMap({...settings.glob, force: !settingsMap.force})
     }), [])
 
+    useEffect(() => window.ipc.receive("open-dialog", (e, res) => {
+        eventEmitter.emit("settings", {name: res.prop, value: res.path})
+    }))
+
     let renderDataField = (item, propName) => {
         if (typeof item.data === "object") {
             if (Array.isArray(item.data)) {
@@ -25,15 +29,29 @@ let SettingsPage = function () {
             }
         } 
         if (typeof item.data === "string") {
+            let formControl
+            if (item.path) {
+                formControl = <Form.Control
+                    value={item.data}
+                    readOnly={true}
+                    className="settings-readonly"
+                    onClick={e => {
+                        window.ipc.send("open-dialog", propName)
+                    }}
+                />
+            } else {
+                formControl = <Form.Control
+                    value={item.data}
+                    onChange={e => eventEmitter.emit("settings", {name: propName, value: e.target.value})}
+                />
+            }
+
             return (
                 <InputGroup className="mb-3">
                     <InputGroup.Text className="w-25">
                         {item.name}
                     </InputGroup.Text>
-                    <Form.Control
-                        value={item.data}
-                        onChange={e => eventEmitter.emit("settings", {name: propName, value: e.target.value})}
-                    />
+                    {formControl}
                 </InputGroup>
             )
         }

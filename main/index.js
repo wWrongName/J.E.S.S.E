@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
 const winControl = require("./winControl")
+const dialogWin = require("./dialogWin")
 
 const config = require(path.join(__dirname, "../config"))
 
@@ -23,6 +24,7 @@ const createWindow = () => {
         mainWindow.loadFile(path.join(__dirname, "../public/index.html"))
 
     winControl(mainWindow)
+    dialogWin(mainWindow)
 }
 
 app.whenReady().then(() => {

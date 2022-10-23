@@ -24,11 +24,12 @@ module.exports = (body, handler, accumulator, whiteList) => {
     let _handleConditions = (index, len, handler) => {
         _indexPush(0)
         let el = _getInstantObj()  
-        
+
         let clearBodyIndexes = _bodyIndexes.slice()
         clearBodyIndexes.splice(0, 1)
+        clearBodyIndexes.pop()
+        clearBodyIndexes = clearBodyIndexes.filter((e, i) => i % 2 === 0)
         let res = handler(el, clearBodyIndexes)
-    
         let contentIndex = Object.keys(el).indexOf("content")
         _indexPop()
 

@@ -56,3 +56,9 @@
     border-color: var(--win-button-color);
     box-shadow: none !important;
 }
+
+.settings-readonly:hover {
+    background-color: var(--back-color) !important;
+    color: var(--card-color) !important;
+    cursor: pointer;
+}

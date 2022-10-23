@@ -27,7 +27,7 @@ window.addEventListener("resize", function(event) {
 function Root () {
     let [projectFiles, setProjectFiles] = useState({})
     let [openedFiles, setOpenedFiles] = useState([])
-    let [activeItem, setActiveItem] = useState(4)
+    let [activeItem, setActiveItem] = useState(1)
 
     let openPage = function (name) {
         items.forEach((item, index) => {
